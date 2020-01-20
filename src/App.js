@@ -9,10 +9,24 @@ import styled from 'styled-components';
 
 // TODO
 /*
-- change type to be windows 95 compliant
 
-maybe
-- music feature, in a modal?
+small fix
+- change type to be windows 95 compliant
+- clean up the start menu MVP
+- toggle open/close modals
+- text for the logos
+- fixed time button
+
+easy features
+- notepad text editor
+- resume.txt
+- resume pdf
+
+harder features
+- music player in a modal?
+- text editor cache
+- paint
+- minesweeper
 */
 
 
@@ -99,7 +113,7 @@ class App extends React.Component {
         <Alert title="Info" type="info" message="Hi! My name is Stefan and yes this is my personal site. Have fun exploring!">Click me!</Alert>
         </div>
         <div>
-          <Icon name="computer" message="computer"/>
+          <Icon name="computer"/>
           <Icon name="earth"/>
           <Icon name="folder"/>
           <Icon name="file_text"/>
