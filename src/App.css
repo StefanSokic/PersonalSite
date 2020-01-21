@@ -1,9 +1,18 @@
+@font-face {
+  font-family: "MSSansSerif";
+  src: url("MSSansSerif.ttf") format("truetype");
+}
+
 .App {
   /* text-align: center; */
 }
 
 body {
   background-color: #008080;
+  font-family: MSSansSerif !important;
+}
+* {
+  font-family: MSSansSerif !important;
 }
 
 .App-logo {
@@ -36,4 +45,9 @@ body {
   flex-direction: row;
   align-items: center;
   /* justify-content: space-between; */
+}
+
+#start-menu {
+  position: fixed;
+  bottom: 3em;
 }

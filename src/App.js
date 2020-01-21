@@ -4,29 +4,46 @@ import icon from '@react95/icons';
 import Icon from '@react95/core/Icon';
 import Alert from '@react95/core/Alert';
 import List from '@react95/core/List';
+import Modal from '@react95/core/Modal';
+import TextArea from '@react95/core/TextArea';
 
 import styled from 'styled-components';
 
 // TODO
 /*
 
-small fix
-- change type to be windows 95 compliant
+small fixes
 - clean up the start menu MVP
+  v - make the basic menu
+  v - make it toggle with the button press
+  - clean the look of the 
 - toggle open/close modals
 - text for the logos
 - fixed time button
+- rectangle thing on mousedown drag
+- cursor hover types
 
 easy features
-- notepad text editor
 - resume.txt
-- resume pdf
+- resume.pdf
 
 harder features
 - music player in a modal?
+- video plater in a modal?
 - text editor cache
 - paint
 - minesweeper
+- my fav movies folder, pings letterboxd API
+- my fav songs folder, pings spotify API
+- my fav aesthetics, pings pinterest API
+- my fav rececpies, pings idk
+
+refactor
+- styled components
+- snapshot tests
+- hooks
+- proper fork
+
 */
 
 
@@ -89,11 +106,34 @@ const StartBtn = styled.button`
   }
 `;
 
+const IconBox = styled.li`
+  padding: 6px 0;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const IconList = styled.ul`
+  height: 100%;
+  width: 5.5em;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0.2em;
+`;
+
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      time: new Date().toLocaleTimeString()
+      time: new Date().toLocaleTimeString(),
+      isStartMenuOpen: true,
+      isNotepadOpen: true,
+      isWelcomeAlertOpen: true,
+      notepadTextValue: "",
     }
   }
 
@@ -103,38 +143,143 @@ class App extends React.Component {
       1000
     );
   }
+
   tick() {
     this.setState({time: new Date().toLocaleTimeString()})
   }
+
+  handleChange(val) {
+    this.setState({
+      notepadTextValue: val,
+    })
+  }
+
+  renderWelcomeAlert() {
+    if (!this.state.isWelcomeAlertOpen) return;
+    return <Alert 
+      title="Welcome" 
+      type="info" 
+      message="Hi! My name is Stefan and yes this is my personal site. Have fun exploring!" 
+      closeAlert={() => this.setState({isWelcomeAlertOpen: false})}>
+      Click me!
+      </Alert>;
+  }
+
+  renderStartMenu() {
+    if (!this.state.isStartMenuOpen) {
+      return;
+    }
+    return (
+    <List id="start-menu">
+        <List.Item icon="folder_exe2">
+          <List>
+            <List.Item icon="folder_exe">Accessories</List.Item>
+            <List.Item icon="folder_exe">StartUp</List.Item>
+            <List.Item icon="microsoft_exchange">Microsoft Exchange</List.Item>
+            <List.Item icon="ms_dos">MS-DOS Prompt</List.Item>
+            <List.Item icon="microsoft_network">
+              The Microsoft Network
+            </List.Item>
+            <List.Item icon="windows_explorer">Windows Explorer</List.Item>
+          </List>
+          Programs
+        </List.Item>
+        <List.Item icon="folder_file">Documents</List.Item>
+        <List.Item icon="settings">
+          <List>
+            <List.Item icon="folder_settings">Control Panel</List.Item>
+            <List.Item icon="folder_print">Printers</List.Item>
+          </List>
+          Settings
+        </List.Item>
+        <List.Item icon="file_find">Find</List.Item>
+        <List.Item icon="help_book">Help</List.Item>
+        <List.Item icon="loader_bat">Run...</List.Item>
+        <List.Divider />
+        <List.Item icon="computer_3">Shut Down...</List.Item>
+      </List>
+    )
+  }
+
+  renderNotepad() {
+    if (!this.state.isNotepadOpen) return;
+    return (
+      <Modal
+        icon="computer"
+        title="Untitled - Notepad"
+        closeModal={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}
+        // buttons={[
+        //   { value: 'Ok', onClick: () => {} },
+        //   { value: 'Cancel', onClick: () => {} },
+        // ]}
+        height="250"
+        menu={[
+          {
+            name: 'File',
+            // list: (
+              // <List>
+              //   <List.Item onClick={() => {}}>Exit</List.Item>
+              // </List>
+            // ),
+          },
+          {
+            name: 'Edit',
+            // list: (
+              // <List>
+              //   <List.Item>Copy</List.Item>
+              // </List>
+            // ),
+          },
+        ]}
+        >
+        <TextArea value={this.state.notepadTextValue} onChange={(e) => this.handleChange(e.target.value)} rows={10} cols={20} />
+      </Modal>
+    )
+  }
+
   render() {
     return (
       <div className="App">
-        <div>
-        <Alert title="Info" type="info" message="Hi! My name is Stefan and yes this is my personal site. Have fun exploring!">Click me!</Alert>
-        </div>
-        <div>
-          <Icon name="computer"/>
-          <Icon name="earth"/>
-          <Icon name="folder"/>
-          <Icon name="file_text"/>
-          <Icon name="notepad"/>
-        </div>
-        <List>
-            <List.Item icon="folder_exe2">
-              <List>
-                <List.Item icon="microsoft_exchange">
-                  Microsoft Exchange
-                </List.Item>
-                <List.Divider />
-                <List.Item icon="windows_explorer">Windows Explorer</List.Item>
-              </List>
-              Programs
-            </List.Item>
-          </List>
+        {this.renderWelcomeAlert()}
+
+        <IconList>
+          <IconBox>
+            <Icon name="computer" />
+            My Computer
+          </IconBox>
+          <IconBox>
+            <Icon name="earth" />
+            The Internet
+          </IconBox>
+          <IconBox>
+            <Icon name="folder" />
+            Files
+          </IconBox>
+          <IconBox>
+            <Icon name="file_text" />
+            Resume.txt
+          </IconBox>
+          <IconBox onDoubleClick={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}>
+            <Icon name="notepad" />
+            NotePad
+          </IconBox>
+          <IconBox>
+            <Icon name="cd_music" />
+            Music
+          </IconBox>
+          <IconBox>
+            <Icon name="wordpad" />
+            Resume.pdf
+          </IconBox>
+        </IconList>
+          
+        {this.renderNotepad()}
+        {this.renderStartMenu()}
+
           <div>
             <Footer>
               <span className="split-footer">
-                <StartBtn>
+                <StartBtn onClick={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})}>
                   <span id="split-footer-logo">
                     <Icon name="logo" width="20"/>
                     <span>Start</span>
