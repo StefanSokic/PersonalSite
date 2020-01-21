@@ -139,6 +139,7 @@ class App extends React.Component {
       isNotepadOpen: true,
       isWelcomeAlertOpen: true,
       isResumePDFOpen: true,
+      isWhyModalOpen: true,
       notepadTextValue: "",
     }
   }
@@ -165,7 +166,7 @@ class App extends React.Component {
     return <Alert 
       title="Welcome" 
       type="info" 
-      message="Hi! My name is Stefan and yes this is my personal site. Have fun exploring!" 
+      message="Hi my name is Stefan and yes this is my personal site. Have fun exploring!" 
       closeAlert={() => this.setState({isWelcomeAlertOpen: false})}>
       Click me!
       </Alert>;
@@ -211,7 +212,7 @@ class App extends React.Component {
     if (!this.state.isNotepadOpen) return;
     return (
       <Modal
-        icon="computer"
+        icon="notepad"
         title="Untitled - Notepad"
         closeModal={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}
         // buttons={[
@@ -247,7 +248,7 @@ class App extends React.Component {
     if (!this.state.isResumePDFOpen) return;
     return (
       <Modal
-        icon="computer"
+        icon="wordpad"
         title="Resume.pdf"
         closeModal={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}
         // buttons={[
@@ -257,29 +258,30 @@ class App extends React.Component {
         height="600"
         width="600"
         >
-        <Document onLoadError={console.error} file="resume.pdf"> <Page pageNumber={1}/>  </Document>
+        <Document onLoadError={console.error} onLoadSuccess={console.log("success")} file="http://localhost:3000/resume.pdf"> <Page pageNumber={1} />  </Document>
       </Modal>
     )
   }
 
-  // renderWhyModal() {
-  //   if (!this.state.isWhyModalOpen) return;
-  //   return (
-  //     <Modal
-  //       icon="computer"
-  //       title="Resume.pdf"
-  //       closeModal={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}
-  //       // buttons={[
-  //       //   { value: 'Ok', onClick: () => {} },
-  //       //   { value: 'Cancel', onClick: () => {} },
-  //       // ]}
-  //       height="600"
-  //       width="600"
-  //       >
-  //       <Document onLoadError={console.error} file="resume.pdf"> <Page pageNumber={1}/>  </Document>
-  //     </Modal>
-  //   )
-  // }
+  renderWhyModal() {
+    if (!this.state.isWhyModalOpen) return;
+    return (
+      <Modal
+        icon="file_text"
+        title="Why.txt"
+        closeModal={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}
+        buttons={[
+          { value: 'Ok', onClick: () => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})},
+          // { value: 'Cancel', onClick: () => {} },
+        ]}
+        height="400"
+        width="400"
+        >
+        <img src="https://media.giphy.com/media/l3q2zbskZp2j8wniE/giphy.gif"/>
+        Why have I done this? blah blah blah
+      </Modal>
+    )
+  }
 
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -292,15 +294,15 @@ class App extends React.Component {
             <Icon name="computer" />
             My Computer
           </IconBox>
-          <IconBox>
+          {/* <IconBox>
             <Icon name="earth" />
             The Internet
           </IconBox>
           <IconBox>
             <Icon name="folder" />
             Files
-          </IconBox>
-          <IconBox>
+          </IconBox> */}
+          <IconBox onDoubleClick={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}>
             <Icon name="file_text" />
             Why.txt
           </IconBox>
@@ -319,27 +321,27 @@ class App extends React.Component {
         </IconList>
           
         {this.renderResumePDF()}
+        {this.renderWhyModal()}
         {this.renderNotepad()}
         {this.renderStartMenu()}
 
-          <div>
-            <Footer>
-              <span className="split-footer">
-                <StartBtn onClick={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})}>
-                  <span id="split-footer-logo">
-                    <Icon name="logo" width="20"/>
-                    <span>Start</span>
-                  </span>
-                </StartBtn>
-                <StartBtn>
-                  <span id="split-footer-logo">
-                    <Icon name="unmute" width="20"/>
-                    <span>{this.state.time}</span>
-                  </span>
-                </StartBtn>
+
+        <Footer>
+          <span className="split-footer">
+            <StartBtn onClick={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})}>
+              <span id="split-footer-logo">
+                <Icon name="logo" width="20"/>
+                <span>Start</span>
               </span>
-            </Footer>
-          </div>
+            </StartBtn>
+            <StartBtn>
+              <span id="split-footer-logo">
+                <Icon name="unmute" width="20"/>
+                <span>{this.state.time}</span>
+              </span>
+            </StartBtn>
+          </span>
+        </Footer>
       </div>
     );
   }
