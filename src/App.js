@@ -8,6 +8,10 @@ import Modal from '@react95/core/Modal';
 import TextArea from '@react95/core/TextArea';
 
 import styled from 'styled-components';
+import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+
+
 
 // TODO
 /*
@@ -22,6 +26,7 @@ small fixes
 - fixed time button
 - rectangle thing on mousedown drag
 - cursor hover types
+- little sand watch thing as icon when things are loading
 
 easy features
 - resume.txt
@@ -133,6 +138,7 @@ class App extends React.Component {
       isStartMenuOpen: true,
       isNotepadOpen: true,
       isWelcomeAlertOpen: true,
+      isResumePDFOpen: true,
       notepadTextValue: "",
     }
   }
@@ -237,7 +243,46 @@ class App extends React.Component {
     )
   }
 
+  renderResumePDF() {
+    if (!this.state.isResumePDFOpen) return;
+    return (
+      <Modal
+        icon="computer"
+        title="Resume.pdf"
+        closeModal={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}
+        // buttons={[
+        //   { value: 'Ok', onClick: () => {} },
+        //   { value: 'Cancel', onClick: () => {} },
+        // ]}
+        height="600"
+        width="600"
+        >
+        <Document onLoadError={console.error} file="resume.pdf"> <Page pageNumber={1}/>  </Document>
+      </Modal>
+    )
+  }
+
+  // renderWhyModal() {
+  //   if (!this.state.isWhyModalOpen) return;
+  //   return (
+  //     <Modal
+  //       icon="computer"
+  //       title="Resume.pdf"
+  //       closeModal={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}
+  //       // buttons={[
+  //       //   { value: 'Ok', onClick: () => {} },
+  //       //   { value: 'Cancel', onClick: () => {} },
+  //       // ]}
+  //       height="600"
+  //       width="600"
+  //       >
+  //       <Document onLoadError={console.error} file="resume.pdf"> <Page pageNumber={1}/>  </Document>
+  //     </Modal>
+  //   )
+  // }
+
   render() {
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
       <div className="App">
         {this.renderWelcomeAlert()}
@@ -257,7 +302,7 @@ class App extends React.Component {
           </IconBox>
           <IconBox>
             <Icon name="file_text" />
-            Resume.txt
+            Why.txt
           </IconBox>
           <IconBox onDoubleClick={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}>
             <Icon name="notepad" />
@@ -267,12 +312,13 @@ class App extends React.Component {
             <Icon name="cd_music" />
             Music
           </IconBox>
-          <IconBox>
+          <IconBox onDoubleClick={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}>
             <Icon name="wordpad" />
             Resume.pdf
           </IconBox>
         </IconList>
           
+        {this.renderResumePDF()}
         {this.renderNotepad()}
         {this.renderStartMenu()}
 
