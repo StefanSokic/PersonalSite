@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 
+import startup from "./startup.jpg";
+
 
 
 // TODO
@@ -52,6 +54,14 @@ refactor
 
 */
 
+const Startup = styled.div`
+  background-image: url("./startup.jpg");
+  height: 100vh;
+  width: 100vw;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
 
 const Footer = styled.button`
   min-width: 100vw;
@@ -181,6 +191,7 @@ class App extends React.Component {
       isWhyModalOpen: true,
       isMyComputerOpen: true,
       notepadTextValue: "",
+      startingUp: true
     }
   }
 
@@ -198,6 +209,10 @@ class App extends React.Component {
       isMyComputerOpen:false,
       notepadTextValue: "",
     })
+    setInterval(
+      () => this.setState({startingUp: false}),
+      3000
+    );
   }
 
   tick() {
@@ -412,10 +427,17 @@ class App extends React.Component {
     )
   }
 
+  renderStartupScreen() {
+    if (!this.state.startingUp) return;
+    console.log("starting up")
+    return <Startup/>;
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
       <div className="App">
+        {this.renderStartupScreen()}
         {this.renderWelcomeAlert()}
         {this.renderResumePDF()}
         {this.renderWhyModal()}
