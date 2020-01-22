@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import icon from '@react95/icons';
-import Icon from '@react95/core/Icon';
-import Alert from '@react95/core/Alert';
-import List from '@react95/core/List';
-import Modal from '@react95/core/Modal';
-import TextArea from '@react95/core/TextArea';
+
+import Icon from './components/Icon';
+import Alert from './components/Alert';
+import List from './components/List';
+import Modal from './components/Modal';
+import TextArea from './components/TextArea';
 
 import styled from 'styled-components';
 import { Document, Page } from 'react-pdf';
@@ -288,6 +288,10 @@ class App extends React.Component {
     return (
       <div className="App">
         {this.renderWelcomeAlert()}
+        {this.renderResumePDF()}
+        {this.renderWhyModal()}
+        {this.renderNotepad()}
+        {this.renderStartMenu()}
 
         <IconList>
           <IconBox>
@@ -320,10 +324,6 @@ class App extends React.Component {
           </IconBox>
         </IconList>
           
-        {this.renderResumePDF()}
-        {this.renderWhyModal()}
-        {this.renderNotepad()}
-        {this.renderStartMenu()}
 
 
         <Footer>
