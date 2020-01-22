@@ -11,7 +11,9 @@ import styled from 'styled-components';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 
-import startup from "./startup.jpg";
+import clouds from "./windows-95-clouds.jpg";
+import shutdown from "./shutdown.jpg"
+import logo from "./windows-95-logo.svg";
 
 
 
@@ -38,6 +40,7 @@ harder features
 - recycle bin can have some funny things in it around what needs to be thrown out
 - music player in a modal?
 - video plater in a modal?
+- calculator
 - text editor cache
 - paint
 - minesweeper
@@ -54,13 +57,23 @@ refactor
 
 */
 
-const Startup = styled.div`
-  background-image: url("./startup.jpg");
-  height: 100vh;
-  width: 100vw;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+const CoverBackground = styled.img`
+  // background-image: url("startup.jpg");
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  z-index: 10000000000;
+`;
+
+const LogoSvg = styled.img`
+  position: fixed;
+  margin: auto;
+  top: 30vh;
+  left: 37.5vw;
+  max-width: 25vw;
+  z-index: 100000000000;
 `;
 
 const Footer = styled.button`
@@ -162,7 +175,7 @@ const IconBoxMyComputer = styled.div`
 
 const WhiteSpace = styled.div`
   border: none;
-  max-height: 100%;
+  // max-height: 100%;
   border-left: 1px solid #868a8e;
   border-top: 1px solid #868a8e;
   width: 100%;
@@ -190,8 +203,10 @@ class App extends React.Component {
       isResumePDFOpen: true,
       isWhyModalOpen: true,
       isMyComputerOpen: true,
+      isDocumentsOpen: true,
       notepadTextValue: "",
-      startingUp: true
+      startingUp: true,
+      shuttingDown: false,
     }
   }
 
@@ -203,11 +218,11 @@ class App extends React.Component {
     this.setState({
       isStartMenuOpen: false,
       isNotepadOpen: false,
-      isWelcomeAlertOpen: true,
+      isWelcomeAlertOpen: true, // dont need this here?
       isResumePDFOpen: false,
       isWhyModalOpen: false,
       isMyComputerOpen:false,
-      notepadTextValue: "",
+      isDocumentsOpen: false,
     })
     setInterval(
       () => this.setState({startingUp: false}),
@@ -255,7 +270,12 @@ class App extends React.Component {
           </List>
           Programs
         </List.Item>
-        <List.Item icon="folder_file">Documents</List.Item>
+        <List.Item 
+          icon="folder_file"
+          onClick={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})}
+          >
+          Documents
+        </List.Item>
         <List.Item icon="settings">
           <List>
             <List.Item icon="folder_settings">Control Panel</List.Item>
@@ -267,7 +287,11 @@ class App extends React.Component {
         <List.Item icon="help_book">Help</List.Item>
         <List.Item icon="loader_bat">Run...</List.Item>
         <List.Divider />
-        <List.Item icon="computer_3">Shut Down...</List.Item>
+        <List.Item 
+          onClick={() => this.setState({shuttingDown: true})}
+          icon="computer_3">
+          Shut Down...
+          </List.Item>
       </List>
     )
   }
@@ -338,11 +362,27 @@ class App extends React.Component {
           { value: 'Ok', onClick: () => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})},
           // { value: 'Cancel', onClick: () => {} },
         ]}
-        height="400"
-        width="400"
+        height="500"
+        width="430"
         >
-        <img src="https://media.giphy.com/media/l3q2zbskZp2j8wniE/giphy.gif"/>
-        Why have I done this? blah blah blah
+        <WhiteSpace>
+          <img src="https://media.giphy.com/media/l3q2zbskZp2j8wniE/giphy.gif"/>
+          <div id="why-modal-text">
+            Why would I do this to you/myself?
+            <br></br>
+            Because <span id="strikethrough">I clearly have too much time on my hands.</span> Windows 95 is my favourite user interface of all time. It was the first GUI to introduce the concept of the desktop, taskbar, start menu, and file manager - all of which remain present in current Windows versions. It made personal computing intuitive. Plus, look how it makes Bill dance.
+            <br></br>
+            <br></br>
+            How did I build it?
+            <br></br>
+            Mostly React. I used styled components and built on top of the scaffolding created by the cool people behind React95.
+            <br></br>
+            <br></br>
+            Who am I?
+            <br></br>
+            An easily exciteable software person based in Toronto. Here are some links to my favourite music, movies, youtube channel, nostalgia, books, meme, clothing, blog, and human. Feel free to say hi via LinkedIn or shoot me an email. I tend to respond between two and `Number.POSITIVE_INFINITY` business days.
+          </div>
+        </WhiteSpace>
       </Modal>
     )
   }
@@ -352,7 +392,7 @@ class App extends React.Component {
     return (
       <Modal
         icon="computer"
-        title="My Computer" // "My Digital Brain"?
+        title="My Computer"
         closeModal={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}
         height="400"
         width="500"
@@ -417,9 +457,77 @@ class App extends React.Component {
               <Icon name="folder_print" />
               Printers
             </IconBoxMyComputer>
+            <IconBoxMyComputer onDoubleClick={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})} >
+              <Icon name="folder_open" />
+              Documents
+            </IconBoxMyComputer>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    )
+  }
+
+  renderDocuments() {
+    if (!this.state.isDocumentsOpen) return;
+    return (
+      <Modal
+        icon="folder_open"
+        title="Documents" // "My Digital Brain"?
+        closeModal={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})}
+        height="400"
+        width="500"
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'Edit',
+            list: (
+              <List>
+                <List.Item>Copy</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'View',
+            // list: (
+              // <List>
+              //   <List.Item>Copy</List.Item>
+              // </List>
+            // ),
+          },
+          {
+            name: 'Help',
+            // list: (
+              // <List>
+              //   <List.Item>Copy</List.Item>
+              // </List>
+            // ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
             <IconBoxMyComputer >
               <Icon name="folder" />
               Movies
+            </IconBoxMyComputer>
+            <IconBoxMyComputer >
+              <Icon name="folder" />
+              Music
+            </IconBoxMyComputer>
+            <IconBoxMyComputer >
+              <Icon name="folder" />
+              Architecture
+            </IconBoxMyComputer>
+            <IconBoxMyComputer >
+              <Icon name="folder" />
+              Books
             </IconBoxMyComputer>
           </IconListRow>
         </WhiteSpace>
@@ -429,8 +537,17 @@ class App extends React.Component {
 
   renderStartupScreen() {
     if (!this.state.startingUp) return;
-    console.log("starting up")
-    return <Startup/>;
+    return (
+      <React.Fragment>
+        <CoverBackground src={clouds}/>
+        <LogoSvg src={logo} />
+      </React.Fragment>
+    );
+  }
+
+  renderShutdownScreen() {
+    if (!this.state.shuttingDown) return;
+    return <CoverBackground src={shutdown}/>
   }
 
   render() {
@@ -438,12 +555,15 @@ class App extends React.Component {
     return (
       <div className="App">
         {this.renderStartupScreen()}
+        {this.renderShutdownScreen()}
+
         {this.renderWelcomeAlert()}
         {this.renderResumePDF()}
         {this.renderWhyModal()}
         {this.renderNotepad()}
         {this.renderStartMenu()}
         {this.renderMyComputer()}
+        {this.renderDocuments()}
 
         <IconList>
           <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>
@@ -454,10 +574,7 @@ class App extends React.Component {
             <Icon name="earth" />
             The Internet
           </IconBox>
-          <IconBox>
-            <Icon name="folder" />
-            Files
-          </IconBox> */}
+           */}
           <IconBox onDoubleClick={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}>
             <Icon name="file_text" />
             Why.txt
