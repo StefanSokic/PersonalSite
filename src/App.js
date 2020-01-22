@@ -493,22 +493,6 @@ class App extends React.Component {
               </List>
             ),
           },
-          {
-            name: 'View',
-            // list: (
-              // <List>
-              //   <List.Item>Copy</List.Item>
-              // </List>
-            // ),
-          },
-          {
-            name: 'Help',
-            // list: (
-              // <List>
-              //   <List.Item>Copy</List.Item>
-              // </List>
-            // ),
-          },
         ]}
         >
         <WhiteSpace>
@@ -528,6 +512,46 @@ class App extends React.Component {
             <IconBoxMyComputer >
               <Icon name="folder" />
               Books
+            </IconBoxMyComputer>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    )
+  }
+
+  renderRecycleBin() {
+    if (!this.state.isRecycleBinOpen) return;
+    return (
+      <Modal
+        icon="recycle_full"
+        title="Recycle Bin" 
+        closeModal={() => this.setState({isRecycleBinOpen: !this.state.isRecycleBinOpen})}
+        height="400"
+        width="500"
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'Edit',
+            list: (
+              <List>
+                <List.Item>Copy</List.Item>
+              </List>
+            ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <IconBoxMyComputer >
+              <Icon name="folder" />
+              Fooey
             </IconBoxMyComputer>
           </IconListRow>
         </WhiteSpace>
@@ -564,6 +588,7 @@ class App extends React.Component {
         {this.renderStartMenu()}
         {this.renderMyComputer()}
         {this.renderDocuments()}
+        {this.renderRecycleBin()}
 
         <IconList>
           <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>
@@ -591,13 +616,11 @@ class App extends React.Component {
             <Icon name="wordpad" />
             Resume.pdf
           </IconBox>
-          <IconBox>
+          <IconBox onDoubleClick={() => this.setState({isRecycleBinOpen: !this.state.isRecycleBinOpen})}>
             <Icon name="recycle_full" />
             Recycle Bin
           </IconBox>
         </IconList>
-          
-
 
         <Footer>
           <span className="split-footer">
