@@ -33,6 +33,7 @@ easy features
 - resume.pdf
 
 harder features
+- recycle bin can have some funny things in it around what needs to be thrown out
 - music player in a modal?
 - video plater in a modal?
 - text editor cache
@@ -130,6 +131,44 @@ const IconList = styled.ul`
   margin: 0.2em;
 `;
 
+const IconListRow = styled.div`
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
+const IconBoxMyComputer = styled.div`
+  padding: 6px 0;
+  display: flex;
+  width: 6em;
+  height: 4em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const WhiteSpace = styled.div`
+  border: none;
+  max-height: 100%;
+  border-left: 1px solid #868a8e;
+  border-top: 1px solid #868a8e;
+  width: 100%;
+  height: 100%;
+
+  ${({ width, height }) => `width: ${width}px; height: ${height}px;`}
+
+  background-color: #fff;
+
+  outline: none;
+  resize: none;
+
+  box-shadow: inset -1px -1px 0 0 #c3c7cb, inset 1px 1px 0 0 #000000,
+    0.5px 0.5px 0 0.5px #ffffff;
+`;
+
 class App extends React.Component {
   constructor() {
     super();
@@ -140,6 +179,7 @@ class App extends React.Component {
       isWelcomeAlertOpen: true,
       isResumePDFOpen: true,
       isWhyModalOpen: true,
+      isMyComputerOpen: true,
       notepadTextValue: "",
     }
   }
@@ -149,6 +189,15 @@ class App extends React.Component {
       () => this.tick(),
       1000
     );
+    this.setState({
+      isStartMenuOpen: false,
+      isNotepadOpen: false,
+      isWelcomeAlertOpen: true,
+      isResumePDFOpen: false,
+      isWhyModalOpen: false,
+      isMyComputerOpen:false,
+      notepadTextValue: "",
+    })
   }
 
   tick() {
@@ -219,7 +268,7 @@ class App extends React.Component {
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
         // ]}
-        height="250"
+        height={250}
         menu={[
           {
             name: 'File',
@@ -283,6 +332,86 @@ class App extends React.Component {
     )
   }
 
+  renderMyComputer() {
+    if (!this.state.isMyComputerOpen) return;
+    return (
+      <Modal
+        icon="computer"
+        title="My Computer" // "My Digital Brain"?
+        closeModal={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}
+        height="400"
+        width="500"
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'Edit',
+            list: (
+              <List>
+                <List.Item>Copy</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'View',
+            // list: (
+              // <List>
+              //   <List.Item>Copy</List.Item>
+              // </List>
+            // ),
+          },
+          {
+            name: 'Help',
+            // list: (
+              // <List>
+              //   <List.Item>Copy</List.Item>
+              // </List>
+            // ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <IconBoxMyComputer>
+              <Icon name="reader_disket2" />
+              Floppy (A:)
+            </IconBoxMyComputer>
+            <IconBoxMyComputer>
+              <Icon name="reader_closed" />
+              (C:)
+            </IconBoxMyComputer>
+            <IconBoxMyComputer>
+              <Icon name="reader_cd" />
+              New (D:)
+            </IconBoxMyComputer>
+            <IconBoxMyComputer>
+              <Icon name="folder_shared" />
+              Dial-Up
+            </IconBoxMyComputer>
+            <IconBoxMyComputer>
+              <Icon name="folder_settings" />
+              Control Panel
+            </IconBoxMyComputer>
+            <IconBoxMyComputer>
+              <Icon name="folder_print" />
+              Printers
+            </IconBoxMyComputer>
+            <IconBoxMyComputer >
+              <Icon name="folder" />
+              Movies
+            </IconBoxMyComputer>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    )
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -292,9 +421,10 @@ class App extends React.Component {
         {this.renderWhyModal()}
         {this.renderNotepad()}
         {this.renderStartMenu()}
+        {this.renderMyComputer()}
 
         <IconList>
-          <IconBox>
+          <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>
             <Icon name="computer" />
             My Computer
           </IconBox>
@@ -321,6 +451,10 @@ class App extends React.Component {
           <IconBox onDoubleClick={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}>
             <Icon name="wordpad" />
             Resume.pdf
+          </IconBox>
+          <IconBox>
+            <Icon name="recycle_full" />
+            Recycle Bin
           </IconBox>
         </IconList>
           

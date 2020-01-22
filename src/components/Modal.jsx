@@ -160,9 +160,12 @@ const Modal = ({
     },
   };
 
+  let randx = Math.random() * (400) + 100;
+  let randy = Math.random() * (200) + 25;
+
   return (
     <React.Fragment>
-      <Draggable handle=".draggable" defaultPosition={defaultPosition}>
+      <Draggable handle=".draggable" defaultPosition={{x: randx, y: randy}}>
         <ModalWrapper width={width} height={height} {...rest}>
           <TitleBar className="draggable">
             {icon && <Icon name={icon} {...iconStyle} />}
@@ -236,10 +239,10 @@ Modal.propTypes = {
     }),
   ),
   buttonsAlignment: PropTypes.oneOf(['center', 'flex-start', 'flex-end']),
-  defaultPosition: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  }),
+//   defaultPosition: PropTypes.shape({
+    // x: PropTypes.number.isRequired,
+    // y: PropTypes.number.isRequired,
+//   }),
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
@@ -249,7 +252,7 @@ Modal.defaultProps = {
   title: 'Modal',
   buttonsAlignment: 'flex-end',
   children: null,
-  defaultPosition: { x: 0, y: 0 },
+//   defaultPosition: { x: randx, y: randy },
   buttons: [],
   menu: [],
   width: 300,
