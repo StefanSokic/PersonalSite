@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Modal from './Modal';
 
-import {dialogError} from '../dialog-error.png';
-import {dialogInfo} from '../dialog-info.png';
-import {dialogQuestion} from '../dialog-question.png';
-import {dialogWarning} from '../dialog-warning.png';
+import dialogError from '../dialog-error.png';
+import dialogInfo from '../dialog-info.png';
+import dialogQuestion from '../dialog-question.png';
+import dialogWarning from '../dialog-warning.png';
 
 const Dialog = styled.div`
   display: flex;

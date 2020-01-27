@@ -194,6 +194,14 @@ const WhiteSpace = styled.div`
     0.5px 0.5px 0 0.5px #ffffff;
 `;
 
+const iconStyle = {
+  width: 15,
+  height: 13,
+  style: {
+    marginRight: '4px',
+  },
+};
+
 class App extends React.Component {
   constructor() {
     super();
@@ -208,6 +216,7 @@ class App extends React.Component {
       isMyComputerOpen: true,
       isControlPanelOpen: true,
       isControlPanelAlertOpen: true,
+      isAwfulExperienceVideoOpen: true,
       isDocumentsOpen: true,
       isLiarPngOpen: true,
       notepadTextValue: "",
@@ -225,6 +234,7 @@ class App extends React.Component {
       isStartMenuOpen: false,
       isNotepadOpen: false,
       isControlPanelAlertOpen: false,
+      isAwfulExperienceVideoOpen: false,
       isResumePDFOpen: false,
       isWhyModalOpen: false,
       isMyComputerOpen:false,
@@ -690,6 +700,11 @@ class App extends React.Component {
               <Icon name="window_graph"/>
               liar.png
             </IconBoxMyComputer>
+            <IconBoxMyComputer 
+              onDoubleClick={() => this.setState({isAwfulExperienceVideoOpen: true})}>
+              <Icon name="folder" />
+              bad_time.mp4
+            </IconBoxMyComputer>
           </IconListRow>
         </WhiteSpace>
       </Modal>
@@ -750,6 +765,27 @@ class App extends React.Component {
     )
   }
 
+  renderAwfulExperienceVideo() {
+    if (!this.state.isAwfulExperienceVideoOpen) return;
+    return (
+      <Modal
+        icon="window_abc"
+        title="bad_time.mp4"
+        closeModal={() => this.setState({isAwfulExperienceVideoOpen: false})}
+        height="390"
+        width="465"
+        >
+          <ReactPlayer 
+            url='https://www.youtube.com/watch?v=tscOUFxV3qA' 
+            playing={true}
+            width="450px"
+            loop={true}
+            youtubeConfig={{ playerVars: { controls: 0 } }}
+            />
+      </Modal>
+    )
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -766,6 +802,7 @@ class App extends React.Component {
         {this.renderDocuments()}
         {this.renderRecycleBin()}
         {this.renderLiarPng()}
+        {this.renderAwfulExperienceVideo()}
 
         {this.renderControlPanel()}
         {this.renderControlPanelAlert()}
