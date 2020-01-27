@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactPlayer from 'react-player'
+import styled from 'styled-components';
 import './App.css';
 
 import Icon from './components/Icon';
@@ -7,13 +9,13 @@ import List from './components/List';
 import Modal from './components/Modal';
 import TextArea from './components/TextArea';
 
-import styled from 'styled-components';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 
 import clouds from "./windows-95-clouds.jpg";
 import shutdown from "./shutdown.jpg"
 import logo from "./windows-95-logo.svg";
+
 
 
 
@@ -200,6 +202,7 @@ class App extends React.Component {
       isStartMenuOpen: true,
       isNotepadOpen: true,
       isWelcomeAlertOpen: true,
+      isWelcomeVideoOpen: true,
       isResumePDFOpen: true,
       isWhyModalOpen: true,
       isMyComputerOpen: true,
@@ -563,7 +566,7 @@ class App extends React.Component {
             <IconBoxMyComputer
               onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
               <Icon name="mspaint" />
-              These
+              The
             </IconBoxMyComputer>
             <IconBoxMyComputer
               onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
@@ -705,6 +708,28 @@ class App extends React.Component {
     return <CoverBackground src={shutdown}/>
   }
 
+  renderWelcomeVideo() {
+    if (!this.state.isWelcomeVideoOpen) return;
+    return (
+      <Modal
+        icon="mute"
+        title="launch_party.mp4"
+        closeModal={() => this.setState({isWelcomeVideoOpen: false})}
+        height="390"
+        width="555"
+        >
+          <ReactPlayer 
+            url='https://www.youtube.com/watch?v=y0CRWAz09r8&t=60s' 
+            playing={true}
+            muted={true}
+            width="540px"
+            loop={true}
+            youtubeConfig={{ playerVars: { controls: 0 } }}
+            />
+      </Modal>
+    )
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -723,6 +748,7 @@ class App extends React.Component {
 
         {this.renderControlPanel()}
         {this.renderControlPanelAlert()}
+        {this.renderWelcomeVideo()}
 
         <IconList>
           <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>

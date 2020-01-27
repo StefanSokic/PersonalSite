@@ -161,7 +161,7 @@ const Modal = ({
   };
 
   let randx = Math.random() * (400) + 100;
-  let randy = Math.random() * (200) + 25;
+  let randy = Math.random() * (50) + 1;
 
   return (
     <React.Fragment>
