@@ -62,6 +62,10 @@ body {
   bottom: 3em;
 }
 
+#liar-png {
+  max-width: 100%;
+}
+
 
 /* scrollbar */
 

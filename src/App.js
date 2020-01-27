@@ -14,7 +14,7 @@ import { pdfjs } from 'react-pdf';
 
 import clouds from "./windows-95-clouds.jpg";
 import shutdown from "./shutdown.jpg"
-import logo from "./windows-95-logo.svg";
+import logo from "./windows-95-logo.png";
 
 
 
@@ -74,7 +74,7 @@ const LogoSvg = styled.img`
   margin: auto;
   top: 30vh;
   left: 37.5vw;
-  max-width: 25vw;
+  min-width: 25vw;
   z-index: 100000000000;
 `;
 
@@ -209,6 +209,7 @@ class App extends React.Component {
       isControlPanelOpen: true,
       isControlPanelAlertOpen: true,
       isDocumentsOpen: true,
+      isLiarPngOpen: true,
       notepadTextValue: "",
       startingUp: true,
       shuttingDown: false,
@@ -229,6 +230,7 @@ class App extends React.Component {
       isMyComputerOpen:false,
       isDocumentsOpen: false,
       isControlPanelOpen: false,
+      isLiarPngOpen: false,
     })
     setInterval(
       () => this.setState({startingUp: false}),
@@ -683,9 +685,10 @@ class App extends React.Component {
         >
         <WhiteSpace>
           <IconListRow>
-            <IconBoxMyComputer >
-              <Icon name="folder" />
-              Fooey
+            <IconBoxMyComputer 
+              onDoubleClick={() => this.setState({isLiarPngOpen: true})}>
+              <Icon name="window_graph"/>
+              liar.png
             </IconBoxMyComputer>
           </IconListRow>
         </WhiteSpace>
@@ -730,6 +733,23 @@ class App extends React.Component {
     )
   }
 
+  renderLiarPng() {
+    if (!this.state.isLiarPngOpen) return;
+    return (
+      <Modal
+        icon="window_graph"
+        title="liar.png"
+        closeModal={() => this.setState({isLiarPngOpen: false})}
+        height="325"
+        width="400"
+        >
+          <img 
+            src="https://i.redd.it/ti1gsbujh5n31.png"
+            id="liar-png"/>
+      </Modal>
+    )
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -745,6 +765,7 @@ class App extends React.Component {
         {this.renderMyComputer()}
         {this.renderDocuments()}
         {this.renderRecycleBin()}
+        {this.renderLiarPng()}
 
         {this.renderControlPanel()}
         {this.renderControlPanelAlert()}
