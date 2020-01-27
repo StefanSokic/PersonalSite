@@ -203,6 +203,8 @@ class App extends React.Component {
       isResumePDFOpen: true,
       isWhyModalOpen: true,
       isMyComputerOpen: true,
+      isControlPanelOpen: true,
+      isControlPanelAlertOpen: true,
       isDocumentsOpen: true,
       notepadTextValue: "",
       startingUp: true,
@@ -218,11 +220,12 @@ class App extends React.Component {
     this.setState({
       isStartMenuOpen: false,
       isNotepadOpen: false,
-      isWelcomeAlertOpen: true, // dont need this here?
+      isControlPanelAlertOpen: false,
       isResumePDFOpen: false,
       isWhyModalOpen: false,
       isMyComputerOpen:false,
       isDocumentsOpen: false,
+      isControlPanelOpen: false,
     })
     setInterval(
       () => this.setState({startingUp: false}),
@@ -248,6 +251,17 @@ class App extends React.Component {
       message="Hi my name is Stefan and yes this is my personal site. Have fun exploring!" 
       closeAlert={() => this.setState({isWelcomeAlertOpen: false})}>
       Click me!
+      </Alert>;
+  }
+
+  renderControlPanelAlert() {
+    if (!this.state.isControlPanelAlertOpen) return;
+    return <Alert 
+      title="Error" 
+      type="error" 
+      message="Yeah, like I said, this does nothing" 
+      closeAlert={() => this.setState({isControlPanelAlertOpen: false})}>
+      Ok Thanks
       </Alert>;
   }
 
@@ -278,7 +292,11 @@ class App extends React.Component {
         </List.Item>
         <List.Item icon="settings">
           <List>
-            <List.Item icon="folder_settings">Control Panel</List.Item>
+            <List.Item 
+              icon="folder_settings" 
+              onClick={() => this.setState({isControlPanelOpen: true})}>
+              Control Panel
+            </List.Item>
             <List.Item icon="folder_print">Printers</List.Item>
           </List>
           Settings
@@ -288,7 +306,7 @@ class App extends React.Component {
         <List.Item icon="loader_bat">Run...</List.Item>
         <List.Divider />
         <List.Item 
-          onClick={() => this.setState({shuttingDown: true})}
+          onClick={() => this.setState({shuttingDown: true})} // TODO: either link to "are you sure" window or close all tabs before displaying image
           icon="computer_3">
           Shut Down...
           </List.Item>
@@ -359,7 +377,7 @@ class App extends React.Component {
         title="Why.txt"
         closeModal={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}
         buttons={[
-          { value: 'Ok', onClick: () => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})},
+          { value: 'Ok Thanks', onClick: () => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})},
           // { value: 'Cancel', onClick: () => {} },
         ]}
         height="500"
@@ -449,7 +467,7 @@ class App extends React.Component {
               <Icon name="folder_shared" />
               Dial-Up
             </IconBoxMyComputer>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer onDoubleClick={() => this.setState({isControlPanelOpen: true})}>
               <Icon name="folder_settings" />
               Control Panel
             </IconBoxMyComputer>
@@ -466,6 +484,119 @@ class App extends React.Component {
       </Modal>
     )
   }
+
+  renderControlPanel() {
+    if (!this.state.isControlPanelOpen) return;
+    return (
+      <Modal
+        icon="folder_settings"
+        title="Control Panel"
+        closeModal={() => this.setState({isControlPanelOpen: false})}
+        height="400"
+        width="500"
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+          {
+            name: 'Edit',
+            list: (
+              <List>
+                <List.Item>Copy</List.Item>
+              </List>
+            ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="user" />
+              None
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="window_graph" />
+              Of
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="tree" />
+              These
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="signup" />
+              Do
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="regedit" />
+              Anything
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="ms_dos" />
+              Yet
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="reader_cd_2" />
+              But
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="power_off" />
+              I
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="power_on" />
+              Think
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="mspaint" />
+              These
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="keys" />
+              Icons
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="issue" />
+              Still
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="globe" />
+              Look
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="defrag" />
+              Pretty
+            </IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              <Icon name="file_icons" />
+              Great
+            </IconBoxMyComputer>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    )
+    // TODO: change name of <IconBoxMyComputer> to just IconBoxHorizontal or something
+  }
+
 
   renderDocuments() {
     if (!this.state.isDocumentsOpen) return;
@@ -589,6 +720,9 @@ class App extends React.Component {
         {this.renderMyComputer()}
         {this.renderDocuments()}
         {this.renderRecycleBin()}
+
+        {this.renderControlPanel()}
+        {this.renderControlPanelAlert()}
 
         <IconList>
           <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>
