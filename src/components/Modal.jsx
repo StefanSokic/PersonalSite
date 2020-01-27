@@ -171,7 +171,6 @@ const Modal = ({
             {icon && <Icon name={icon} {...iconStyle} />}
             <Title>{title}</Title>
             <OptionsBox>
-              <Option>?</Option>
               <Option onClick={closeModal}>x</Option>
             </OptionsBox>
           </TitleBar>

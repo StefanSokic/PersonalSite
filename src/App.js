@@ -217,9 +217,11 @@ class App extends React.Component {
       isControlPanelOpen: true,
       isControlPanelAlertOpen: true,
       isAwfulExperienceVideoOpen: true,
+      isErrorOpen: true,
       isDocumentsOpen: true,
       isLiarPngOpen: true,
       notepadTextValue: "",
+      ErrorMessage: "Oops, an error occurred.",
       startingUp: true,
       shuttingDown: false,
     }
@@ -235,6 +237,7 @@ class App extends React.Component {
       isNotepadOpen: false,
       isControlPanelAlertOpen: false,
       isAwfulExperienceVideoOpen: false,
+      isErrorOpen: false,
       isResumePDFOpen: false,
       isWhyModalOpen: false,
       isMyComputerOpen:false,
@@ -466,7 +469,11 @@ class App extends React.Component {
         >
         <WhiteSpace>
           <IconListRow>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({
+                ErrorMessage: "No floppy disk found",
+                isErrorOpen: true,
+              })}>
               <Icon name="reader_disket2" />
               Floppy (A:)
             </IconBoxMyComputer>
@@ -786,6 +793,16 @@ class App extends React.Component {
     )
   }
 
+  renderErrorAlert() {
+    if (!this.state.isErrorOpen) return;
+    return <Alert 
+      title="Error" 
+      type="error" 
+      message={this.state.ErrorMessage} 
+      closeAlert={() => this.setState({isErrorOpen: false})}>
+      </Alert>;
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -803,6 +820,8 @@ class App extends React.Component {
         {this.renderRecycleBin()}
         {this.renderLiarPng()}
         {this.renderAwfulExperienceVideo()}
+
+        {this.renderErrorAlert()}
 
         {this.renderControlPanel()}
         {this.renderControlPanelAlert()}
