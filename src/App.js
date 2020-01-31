@@ -15,6 +15,7 @@ import { pdfjs } from 'react-pdf';
 import clouds from "./windows-95-clouds.jpg";
 import shutdown from "./shutdown.jpg"
 import logo from "./windows-95-logo.png";
+import resumePdf from './resume.pdf'
 
 
 
@@ -379,10 +380,10 @@ class App extends React.Component {
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
         // ]}
-        height="600"
-        width="600"
+        height="585"
+        width="440"
         >
-        <Document onLoadError={console.error} onLoadSuccess={console.log("success")} file="http://localhost:3000/resume.pdf"> <Page pageNumber={1} />  </Document>
+        <Document file={resumePdf}> <Page scale={0.7} pageNumber={1} />  </Document>
       </Modal>
     )
   }
