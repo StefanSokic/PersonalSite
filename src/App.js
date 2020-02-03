@@ -478,15 +478,27 @@ class App extends React.Component {
               <Icon name="reader_disket2" />
               Floppy (A:)
             </IconBoxMyComputer>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({
+                ErrorMessage: "Don't really feel like hacking your Computers C: drive right now",
+                isErrorOpen: true,
+              })}>
               <Icon name="reader_closed" />
               (C:)
             </IconBoxMyComputer>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({
+              ErrorMessage: "Nobody uses the D: drive",
+              isErrorOpen: true,
+              })}>
               <Icon name="reader_cd" />
               New (D:)
             </IconBoxMyComputer>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({
+              ErrorMessage: "This is a website. You have internet. You don't need dialup.",
+              isErrorOpen: true,
+              })}>
               <Icon name="folder_shared" />
               Dial-Up
             </IconBoxMyComputer>
@@ -494,7 +506,11 @@ class App extends React.Component {
               <Icon name="folder_settings" />
               Control Panel
             </IconBoxMyComputer>
-            <IconBoxMyComputer>
+            <IconBoxMyComputer
+              onDoubleClick={() => this.setState({
+              ErrorMessage: "No printers detected",
+              isErrorOpen: true,
+              })}>
               <Icon name="folder_print" />
               Printers
             </IconBoxMyComputer>
@@ -846,10 +862,10 @@ class App extends React.Component {
             <Icon name="notepad" />
             NotePad
           </IconBox>
-          <IconBox>
+          {/* <IconBox>
             <Icon name="cd_music" />
             Music
-          </IconBox>
+          </IconBox> */}
           <IconBox onDoubleClick={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}>
             <Icon name="wordpad" />
             Resume.pdf
