@@ -225,6 +225,21 @@ class App extends React.Component {
       ErrorMessage: "Oops, an error occurred.",
       startingUp: true,
       shuttingDown: false,
+      modalPriorityMap: {
+        isStartMenuOpen: 0,
+        isNotepadOpen: 0,
+        isWelcomeAlertOpen: 0,
+        isWelcomeVideoOpen: 0,
+        isResumePDFOpen: 0,
+        isWhyModalOpen: 0,
+        isMyComputerOpen: 0,
+        isControlPanelOpen: 0,
+        isControlPanelAlertOpen: 0,
+        isAwfulExperienceVideoOpen: 0,
+        isErrorOpen: 0,
+        isDocumentsOpen: 0,
+        isLiarPngOpen: 0,
+      }
     }
   }
 
@@ -252,6 +267,18 @@ class App extends React.Component {
     );
   }
 
+  updateModal(modalType, val) {
+    // new modal priority map
+     // if val == true
+    this.setState({
+      [modalType]: val,
+      // modalPriorityMap: {
+      //   ...modalPriorityMap,
+
+      // }
+    })
+  }
+
   tick() {
     this.setState({time: new Date().toLocaleTimeString()})
   }
@@ -268,7 +295,7 @@ class App extends React.Component {
       title="Welcome" 
       type="info" 
       message="Hi my name is Stefan and yes this is my personal site. Have fun exploring!" 
-      closeAlert={() => this.setState({isWelcomeAlertOpen: false})}>
+      closeAlert={() => this.updateModal("isWelcomeAlertOpen", false)}>
       Click me!
       </Alert>;
   }
@@ -279,7 +306,7 @@ class App extends React.Component {
       title="Error" 
       type="error" 
       message="Yeah, like I said, this does nothing" 
-      closeAlert={() => this.setState({isControlPanelAlertOpen: false})}>
+      closeAlert={() => this.updateModal("isControlPanelAlertOpen", false)}>
       Ok Thanks
       </Alert>;
   }
@@ -305,7 +332,7 @@ class App extends React.Component {
         </List.Item>
         <List.Item 
           icon="folder_file"
-          onClick={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})}
+          onClick={() => this.updateModal("isDocumentsOpen", true)}
           >
           Documents
         </List.Item>
@@ -313,7 +340,7 @@ class App extends React.Component {
           <List>
             <List.Item 
               icon="folder_settings" 
-              onClick={() => this.setState({isControlPanelOpen: true})}>
+              onClick={() => this.updateModal("isControlPanelOpen", true)}>
               Control Panel
             </List.Item>
             <List.Item icon="folder_print">Printers</List.Item>
@@ -339,7 +366,7 @@ class App extends React.Component {
       <Modal
         icon="notepad"
         title="Untitled - Notepad"
-        closeModal={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}
+        closeModal={() => this.updateModal("isNotepadOpen", false)}
         // buttons={[
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
@@ -375,7 +402,7 @@ class App extends React.Component {
       <Modal
         icon="wordpad"
         title="Resume.pdf"
-        closeModal={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}
+        closeModal={() => this.updateModal("isResumePDFOpen", false)}
         // buttons={[
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
@@ -394,9 +421,9 @@ class App extends React.Component {
       <Modal
         icon="file_text"
         title="Why.txt"
-        closeModal={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}
+        closeModal={() => this.updateModal("isWhyModalOpen", false)}
         buttons={[
-          { value: 'Ok Thanks', onClick: () => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})},
+          { value: 'Ok Thanks', onClick: () => this.updateModal("isWhyModalOpen", false)},
           // { value: 'Cancel', onClick: () => {} },
         ]}
         height="500"
@@ -430,7 +457,7 @@ class App extends React.Component {
       <Modal
         icon="computer"
         title="My Computer"
-        closeModal={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}
+        closeModal={() => this.updateModal("isMyComputerOpen", false)}
         height="400"
         width="500"
         menu={[
@@ -502,7 +529,7 @@ class App extends React.Component {
               <Icon name="folder_shared" />
               Dial-Up
             </IconBoxMyComputer>
-            <IconBoxMyComputer onDoubleClick={() => this.setState({isControlPanelOpen: true})}>
+            <IconBoxMyComputer onDoubleClick={() => this.updateModal("isControlPanelOpen", true)}>
               <Icon name="folder_settings" />
               Control Panel
             </IconBoxMyComputer>
@@ -514,7 +541,7 @@ class App extends React.Component {
               <Icon name="folder_print" />
               Printers
             </IconBoxMyComputer>
-            <IconBoxMyComputer onDoubleClick={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})} >
+            <IconBoxMyComputer onDoubleClick={() => this.updateModal("isDocumentsOpen", true)} >
               <Icon name="folder_open" />
               Documents
             </IconBoxMyComputer>
@@ -530,7 +557,7 @@ class App extends React.Component {
       <Modal
         icon="folder_settings"
         title="Control Panel"
-        closeModal={() => this.setState({isControlPanelOpen: false})}
+        closeModal={() => this.updateModal("isControlPanelOpen", false)}
         height="400"
         width="500"
         menu={[
@@ -555,77 +582,77 @@ class App extends React.Component {
         <WhiteSpace>
           <IconListRow>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="user" />
               None
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="window_graph" />
               Of
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="tree" />
               These
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="signup" />
               Do
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="regedit" />
               Anything
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="ms_dos" />
               Yet
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="reader_cd_2" />
               But
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="power_off" />
               I
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="power_on" />
               Think
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="mspaint" />
               The
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="keys" />
               Icons
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="issue" />
               Still
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="globe" />
               Look
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="defrag" />
               Pretty
             </IconBoxMyComputer>
             <IconBoxMyComputer
-              onDoubleClick={() => this.setState({isControlPanelAlertOpen: true})}>
+              onDoubleClick={() => this.updateModal("isControlPanelAlertOpen", true)}>
               <Icon name="file_icons" />
               Great
             </IconBoxMyComputer>
@@ -643,7 +670,7 @@ class App extends React.Component {
       <Modal
         icon="folder_open"
         title="Documents" // "My Digital Brain"?
-        closeModal={() => this.setState({isDocumentsOpen: !this.state.isDocumentsOpen})}
+        closeModal={() => this.updateModal("isDocumentsOpen", false)}
         height="400"
         width="500"
         menu={[
@@ -695,7 +722,7 @@ class App extends React.Component {
       <Modal
         icon="recycle_full"
         title="Recycle Bin" 
-        closeModal={() => this.setState({isRecycleBinOpen: !this.state.isRecycleBinOpen})}
+        closeModal={() => this.updateModal("isRecycleBinOpen", false)}
         height="400"
         width="500"
         menu={[
@@ -720,12 +747,12 @@ class App extends React.Component {
         <WhiteSpace>
           <IconListRow>
             <IconBoxMyComputer 
-              onDoubleClick={() => this.setState({isLiarPngOpen: true})}>
+              onDoubleClick={() => this.updateModal("isLiarPngOpen", true)}>
               <Icon name="window_graph"/>
               liar.png
             </IconBoxMyComputer>
             <IconBoxMyComputer 
-              onDoubleClick={() => this.setState({isAwfulExperienceVideoOpen: true})}>
+              onDoubleClick={() => this.updateModal("isAwfulExperienceVideoOpen", true)}>
               <Icon name="folder" />
               bad_time.mp4
             </IconBoxMyComputer>
@@ -756,7 +783,7 @@ class App extends React.Component {
       <Modal
         icon="mute"
         title="launch_party.mp4"
-        closeModal={() => this.setState({isWelcomeVideoOpen: false})}
+        closeModal={() => this.updateModal("isWelcomeVideoOpen", false)}
         height="390"
         width="555"
         >
@@ -778,7 +805,7 @@ class App extends React.Component {
       <Modal
         icon="window_graph"
         title="liar.png"
-        closeModal={() => this.setState({isLiarPngOpen: false})}
+        closeModal={() => this.updateModal("isLiarPngOpen", false)}
         height="325"
         width="400"
         >
@@ -795,7 +822,7 @@ class App extends React.Component {
       <Modal
         icon="window_abc"
         title="bad_time.mp4"
-        closeModal={() => this.setState({isAwfulExperienceVideoOpen: false})}
+        closeModal={() => this.updateModal("isAwfulExperienceVideoOpen", false)}
         height="390"
         width="465"
         >
@@ -816,7 +843,7 @@ class App extends React.Component {
       title="Error" 
       type="error" 
       message={this.state.ErrorMessage} 
-      closeAlert={() => this.setState({isErrorOpen: false})}>
+      closeAlert={() => this.updateModal("isErrorOpen", false)}>
       </Alert>;
   }
 
@@ -845,7 +872,7 @@ class App extends React.Component {
         {this.renderWelcomeVideo()}
 
         <IconList>
-          <IconBox onDoubleClick={() => this.setState({isMyComputerOpen: !this.state.isMyComputerOpen})}>
+          <IconBox onDoubleClick={() => this.updateModal("isMyComputerOpen", true)}>
             <Icon name="computer" />
             My Computer
           </IconBox>
@@ -854,11 +881,11 @@ class App extends React.Component {
             The Internet
           </IconBox>
            */}
-          <IconBox onDoubleClick={() => this.setState({isWhyModalOpen: !this.state.isWhyModalOpen})}>
+          <IconBox onDoubleClick={() => this.updateModal("isWhyModalOpen", true)}>
             <Icon name="file_text" />
             Why.txt
           </IconBox>
-          <IconBox onDoubleClick={() => this.setState({isNotepadOpen: !this.state.isNotepadOpen})}>
+          <IconBox onDoubleClick={() => this.updateModal("isNotepadOpen", true)}>
             <Icon name="notepad" />
             NotePad
           </IconBox>
@@ -866,11 +893,11 @@ class App extends React.Component {
             <Icon name="cd_music" />
             Music
           </IconBox> */}
-          <IconBox onDoubleClick={() => this.setState({isResumePDFOpen: !this.state.isResumePDFOpen})}>
+          <IconBox onDoubleClick={() => this.updateModal("isResumePDFOpen", true)}>
             <Icon name="wordpad" />
             Resume.pdf
           </IconBox>
-          <IconBox onDoubleClick={() => this.setState({isRecycleBinOpen: !this.state.isRecycleBinOpen})}>
+          <IconBox onDoubleClick={() => this.updateModal("isRecycleBinOpen", true)}>
             <Icon name="recycle_full" />
             Recycle Bin
           </IconBox>
