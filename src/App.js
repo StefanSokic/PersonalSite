@@ -304,6 +304,7 @@ class App extends React.Component {
       message="Hi my name is Stefan and yes this is my personal site. Have fun exploring!" 
       closeAlert={() => this.updateModal("isWelcomeAlertOpen", false)}
       priority={this.getModalPriority("isWelcomeAlertOpen")}
+      onClickHandler={() => this.updateModal("isWelcomeAlertOpen", true)}
       >
       Click me!
       </Alert>;
@@ -317,6 +318,7 @@ class App extends React.Component {
       message="Yeah, like I said, this does nothing" 
       closeAlert={() => this.updateModal("isControlPanelAlertOpen", false)}
       priority={this.getModalPriority("isControlPanelAlertOpen")}
+      onClickHandler={() => this.updateModal("isControlPanelAlertOpen", true)}
       >
       Ok Thanks
       </Alert>;
@@ -384,6 +386,7 @@ class App extends React.Component {
         // ]}
         height={250}
         priority={this.getModalPriority("isNotepadOpen")}
+        onClickHandler={() => this.updateModal("isNotepadOpen", true)}
         menu={[
           {
             name: 'File',
@@ -422,6 +425,7 @@ class App extends React.Component {
         height="585"
         width="440"
         priority={this.getModalPriority("isResumePDFOpen")}
+        onClickHandler={() => this.updateModal("isResumePDFOpen", true)}
         >
         <Document file={resumePdf}> <Page scale={0.7} pageNumber={1} />  </Document>
       </Modal>
@@ -442,6 +446,7 @@ class App extends React.Component {
         height="500"
         width="430"
         priority={this.getModalPriority("isWhyModalOpen")}
+        onClickHandler={() => this.updateModal("isWhyModalOpen", true)}
         >
         <WhiteSpace>
           <img src="https://media.giphy.com/media/l3q2zbskZp2j8wniE/giphy.gif"/>
@@ -475,6 +480,7 @@ class App extends React.Component {
         height="400"
         width="500"
         priority={this.getModalPriority("isMyComputerOpen")}
+        onClickHandler={() => this.updateModal("isMyComputerOpen", true)}
         menu={[
           {
             name: 'File',
@@ -576,6 +582,7 @@ class App extends React.Component {
         height="400"
         width="500"
         priority={this.getModalPriority("isControlPanelOpen")}
+        onClickHandler={() => this.updateModal("isControlPanelOpen", true)}
         menu={[
           {
             name: 'File',
@@ -690,6 +697,7 @@ class App extends React.Component {
         height="400"
         width="500"
         priority={this.getModalPriority("isDocumentsOpen")}
+        onClickHandler={() => this.updateModal("isDocumentsOpen", true)}
         menu={[
           {
             name: 'File',
@@ -743,6 +751,7 @@ class App extends React.Component {
         height="400"
         width="500"
         priority={this.getModalPriority("isRecycleBinOpen")}
+        onClickHandler={() => this.updateModal("isRecycleBinOpen", true)}
         menu={[
           {
             name: 'File',
@@ -805,6 +814,7 @@ class App extends React.Component {
         height="390"
         width="555"
         priority={this.getModalPriority("isWelcomeVideoOpen")}
+        onClickHandler={() => this.updateModal("isWelcomeVideoOpen", true)}
         >
           <ReactPlayer 
             url='https://www.youtube.com/watch?v=y0CRWAz09r8&t=60s' 
@@ -828,6 +838,7 @@ class App extends React.Component {
         height="325"
         width="400"
         priority={this.getModalPriority("isLiarPngOpen")}
+        onClickHandler={() => this.updateModal("isLiarPngOpen", true)}
         >
           <img 
             src="https://i.redd.it/ti1gsbujh5n31.png"
@@ -845,6 +856,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isAwfulExperienceVideoOpen", false)}
         height="390"
         width="465"
+        onClickHandler={() => this.updateModal("isAwfulExperienceVideoOpen", true)}
         >
           <ReactPlayer 
             url='https://www.youtube.com/watch?v=tscOUFxV3qA' 
@@ -865,6 +877,7 @@ class App extends React.Component {
       message={this.state.ErrorMessage} 
       closeAlert={() => this.updateModal("isErrorOpen", false)}>
       priority={this.getModalPriority("isErrorOpen")}
+      onClickHandler={() => this.updateModal("isErrorOpen", true)}
       </Alert>;
   }
 

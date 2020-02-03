@@ -150,6 +150,7 @@ const Modal = ({
   width,
   height,
   priority,
+  onClickHandler,
   ...rest
 }) => {
   const [menuOpened, setMenuOpened] = useState('');
@@ -165,12 +166,10 @@ const Modal = ({
   let randx = Math.random() * (400) + 100;
   let randy = Math.random() * (50) + 1;
 
-  console.log("in modal prio",priority)
-
   return (
     <React.Fragment>
       <Draggable handle=".draggable" defaultPosition={{x: randx, y: randy}}>
-        <ModalWrapper priority={priority} width={width} height={height} {...rest}>
+        <ModalWrapper onClick={onClickHandler} priority={priority} width={width} height={height} {...rest}>
           <TitleBar className="draggable">
             {icon && <Icon name={icon} {...iconStyle} />}
             <Title>{title}</Title>
