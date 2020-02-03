@@ -15,6 +15,7 @@ const ModalWrapper = styled.div`
 
   padding: 2px 2px 8px;
   ${({ width, height }) => `width: ${width}px; height: ${height}px;`}
+  ${({ priority }) => `z-index: ${priority}`}
 
   top: 50px;
 
@@ -148,6 +149,7 @@ const Modal = ({
   defaultPosition,
   width,
   height,
+  priority,
   ...rest
 }) => {
   const [menuOpened, setMenuOpened] = useState('');
@@ -163,10 +165,12 @@ const Modal = ({
   let randx = Math.random() * (400) + 100;
   let randy = Math.random() * (50) + 1;
 
+  console.log("in modal prio",priority)
+
   return (
     <React.Fragment>
       <Draggable handle=".draggable" defaultPosition={{x: randx, y: randy}}>
-        <ModalWrapper width={width} height={height} {...rest}>
+        <ModalWrapper priority={priority} width={width} height={height} {...rest}>
           <TitleBar className="draggable">
             {icon && <Icon name={icon} {...iconStyle} />}
             <Title>{title}</Title>

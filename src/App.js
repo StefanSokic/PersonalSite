@@ -225,21 +225,8 @@ class App extends React.Component {
       ErrorMessage: "Oops, an error occurred.",
       startingUp: true,
       shuttingDown: false,
-      modalPriorityMap: {
-        isStartMenuOpen: 0,
-        isNotepadOpen: 0,
-        isWelcomeAlertOpen: 0,
-        isWelcomeVideoOpen: 0,
-        isResumePDFOpen: 0,
-        isWhyModalOpen: 0,
-        isMyComputerOpen: 0,
-        isControlPanelOpen: 0,
-        isControlPanelAlertOpen: 0,
-        isAwfulExperienceVideoOpen: 0,
-        isErrorOpen: 0,
-        isDocumentsOpen: 0,
-        isLiarPngOpen: 0,
-      }
+      // ex. [isNotePadOpen, isDocumentsOpen, ...], front of stack is highest z-index and on top visually
+      modalPriorityStack: ["isWelcomeAlertOpen","isWelcomeVideoOpen"],
     }
   }
 
@@ -268,14 +255,26 @@ class App extends React.Component {
   }
 
   updateModal(modalType, val) {
-    // new modal priority map
-     // if val == true
+    let newModalPriorityStack = this.state.modalPriorityStack;
+    if (val) {
+      // add to stack
+      if (this.state.modalPriorityStack.includes(modalType)) {
+        // bring new modal to front
+        newModalPriorityStack = newModalPriorityStack.filter(modal => modal !== modalType);
+        newModalPriorityStack.unshift(modalType);
+      } else {
+        // add new modal to head
+        newModalPriorityStack.unshift(modalType);
+      }
+    } else {
+      // remove modal from stack
+      newModalPriorityStack = newModalPriorityStack.filter(modal => modal !== modalType)
+    }
+    console.log("old prio stack", this.state.modalPriorityStack)
+    console.log("new prio stack", newModalPriorityStack)
     this.setState({
       [modalType]: val,
-      // modalPriorityMap: {
-      //   ...modalPriorityMap,
-
-      // }
+      modalPriorityStack: newModalPriorityStack,
     })
   }
 
@@ -289,13 +288,23 @@ class App extends React.Component {
     })
   }
 
+  getModalPriority(modalType) {
+    let modalIndex = this.state.modalPriorityStack.indexOf(modalType)
+    if (modalIndex !== -1) {
+      return 1000 * (this.state.modalPriorityStack.length - modalIndex)
+    }
+    return 0
+  }
+
   renderWelcomeAlert() {
     if (!this.state.isWelcomeAlertOpen) return;
     return <Alert 
       title="Welcome" 
       type="info" 
       message="Hi my name is Stefan and yes this is my personal site. Have fun exploring!" 
-      closeAlert={() => this.updateModal("isWelcomeAlertOpen", false)}>
+      closeAlert={() => this.updateModal("isWelcomeAlertOpen", false)}
+      priority={this.getModalPriority("isWelcomeAlertOpen")}
+      >
       Click me!
       </Alert>;
   }
@@ -306,7 +315,9 @@ class App extends React.Component {
       title="Error" 
       type="error" 
       message="Yeah, like I said, this does nothing" 
-      closeAlert={() => this.updateModal("isControlPanelAlertOpen", false)}>
+      closeAlert={() => this.updateModal("isControlPanelAlertOpen", false)}
+      priority={this.getModalPriority("isControlPanelAlertOpen")}
+      >
       Ok Thanks
       </Alert>;
   }
@@ -372,6 +383,7 @@ class App extends React.Component {
         //   { value: 'Cancel', onClick: () => {} },
         // ]}
         height={250}
+        priority={this.getModalPriority("isNotepadOpen")}
         menu={[
           {
             name: 'File',
@@ -409,6 +421,7 @@ class App extends React.Component {
         // ]}
         height="585"
         width="440"
+        priority={this.getModalPriority("isResumePDFOpen")}
         >
         <Document file={resumePdf}> <Page scale={0.7} pageNumber={1} />  </Document>
       </Modal>
@@ -428,6 +441,7 @@ class App extends React.Component {
         ]}
         height="500"
         width="430"
+        priority={this.getModalPriority("isWhyModalOpen")}
         >
         <WhiteSpace>
           <img src="https://media.giphy.com/media/l3q2zbskZp2j8wniE/giphy.gif"/>
@@ -460,6 +474,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isMyComputerOpen", false)}
         height="400"
         width="500"
+        priority={this.getModalPriority("isMyComputerOpen")}
         menu={[
           {
             name: 'File',
@@ -560,6 +575,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isControlPanelOpen", false)}
         height="400"
         width="500"
+        priority={this.getModalPriority("isControlPanelOpen")}
         menu={[
           {
             name: 'File',
@@ -673,6 +689,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isDocumentsOpen", false)}
         height="400"
         width="500"
+        priority={this.getModalPriority("isDocumentsOpen")}
         menu={[
           {
             name: 'File',
@@ -725,6 +742,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isRecycleBinOpen", false)}
         height="400"
         width="500"
+        priority={this.getModalPriority("isRecycleBinOpen")}
         menu={[
           {
             name: 'File',
@@ -786,6 +804,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isWelcomeVideoOpen", false)}
         height="390"
         width="555"
+        priority={this.getModalPriority("isWelcomeVideoOpen")}
         >
           <ReactPlayer 
             url='https://www.youtube.com/watch?v=y0CRWAz09r8&t=60s' 
@@ -808,6 +827,7 @@ class App extends React.Component {
         closeModal={() => this.updateModal("isLiarPngOpen", false)}
         height="325"
         width="400"
+        priority={this.getModalPriority("isLiarPngOpen")}
         >
           <img 
             src="https://i.redd.it/ti1gsbujh5n31.png"
@@ -844,6 +864,7 @@ class App extends React.Component {
       type="error" 
       message={this.state.ErrorMessage} 
       closeAlert={() => this.updateModal("isErrorOpen", false)}>
+      priority={this.getModalPriority("isErrorOpen")}
       </Alert>;
   }
 
