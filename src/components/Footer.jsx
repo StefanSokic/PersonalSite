@@ -1,0 +1,96 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
+import Icon from './Icon';
+
+const FooterWrapper = styled.button`
+  min-width: 100vw;
+  min-height: 5vh;
+
+  z-index: 100000;
+
+  background-color: #c3c7cb;
+  padding: 7px 20px 5px;
+  border: none;
+  font-size: 12px;
+  box-shadow: inset 1px 1px 0px 1px #ffffff, inset 0 0 0 1px #868a8e,
+    1px 1px 0 0px #000;
+
+  position:fixed;
+  bottom:0;
+
+  // &:disabled {
+  //   color: #868a8e;
+  // }
+  &:focus {
+    outline: none;
+  }
+  //   box-shadow: inset 1px 1px 0px 1px #ffffff,
+  //     inset -0.5px -0.5px 0px 1px #868a8e, 1px 1px 0 1px #000;
+  //   outline: 1px dotted #000;
+  //   outline-offset: -5px;
+  // &:active {
+  //   padding: 8px 20px 5px;
+  //   outline: 1px dotted #000;
+  //   outline-offset: -5px;
+  //   box-shadow: inset 0 0 0 1px #868a8e, 0 0 0 1px #000;
+  // }
+`;
+
+const StartBtn = styled.button`
+  min-width: 3em;
+
+  background-color: #c3c7cb;
+  // padding: 7px 20px 5px;
+  border: none;
+  font-size: 12px;
+  box-shadow: inset 1px 1px 0px 1px #ffffff, inset 0 0 0 1px #868a8e,
+    1px 1px 0 0px #000;
+
+  &:disabled {
+    color: #868a8e;
+  }
+  &:focus {
+      box-shadow: inset 1px 1px 0px 1px #ffffff,
+        inset -0.5px -0.5px 0px 1px #868a8e, 1px 1px 0 1px #000;
+      outline: 1px dotted #000;
+      outline-offset: -5px;
+  }
+  &:active {
+    // padding: 8px 20px 5px;
+    outline: 1px dotted #000;
+    outline-offset: -5px;
+    box-shadow: inset 0 0 0 1px #868a8e, 0 0 0 1px #000;
+  }
+`;
+
+const Footer = ({clickHandler, time}) => {
+    return (
+        <FooterWrapper>
+            <span className="split-footer">
+                <StartBtn onClick={clickHandler}>
+                    <span id="split-footer-logo">
+                    <Icon name="logo" width="20"/>
+                    <span>Start</span>
+                    </span>
+                </StartBtn>
+                <StartBtn>
+                    <span id="split-footer-logo">
+                    <Icon name="unmute" width="20"/>
+                    <span>{time}</span>
+                    </span>
+                </StartBtn>
+            </span>
+        </FooterWrapper>
+    )
+}
+
+Footer.displayName = "Footer";
+
+Footer.propTypes = {
+    time: PropTypes.string,
+    clickHandler: PropTypes.func,
+}
+
+export default Footer;
