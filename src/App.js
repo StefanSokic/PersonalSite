@@ -270,8 +270,6 @@ class App extends React.Component {
       // remove modal from stack
       newModalPriorityStack = newModalPriorityStack.filter(modal => modal !== modalType)
     }
-    console.log("old prio stack", this.state.modalPriorityStack)
-    console.log("new prio stack", newModalPriorityStack)
     this.setState({
       [modalType]: val,
       modalPriorityStack: newModalPriorityStack,
@@ -294,6 +292,12 @@ class App extends React.Component {
       return 1000 * (this.state.modalPriorityStack.length - modalIndex)
     }
     return 0
+  }
+
+  closeModal(event, modalType) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.updateModal(modalType, false);
   }
 
   renderWelcomeAlert() {
@@ -379,7 +383,7 @@ class App extends React.Component {
       <Modal
         icon="notepad"
         title="Untitled - Notepad"
-        closeModal={() => this.updateModal("isNotepadOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isNotepadOpen")}
         // buttons={[
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
@@ -417,7 +421,7 @@ class App extends React.Component {
       <Modal
         icon="wordpad"
         title="Resume.pdf"
-        closeModal={() => this.updateModal("isResumePDFOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isResumePDFOpen")}
         // buttons={[
         //   { value: 'Ok', onClick: () => {} },
         //   { value: 'Cancel', onClick: () => {} },
@@ -438,7 +442,7 @@ class App extends React.Component {
       <Modal
         icon="file_text"
         title="Why.txt"
-        closeModal={() => this.updateModal("isWhyModalOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isWhyModalOpen")}
         buttons={[
           { value: 'Ok Thanks', onClick: () => this.updateModal("isWhyModalOpen", false)},
           // { value: 'Cancel', onClick: () => {} },
@@ -476,7 +480,7 @@ class App extends React.Component {
       <Modal
         icon="computer"
         title="My Computer"
-        closeModal={() => this.updateModal("isMyComputerOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isMyComputerOpen")}
         height="400"
         width="500"
         priority={this.getModalPriority("isMyComputerOpen")}
@@ -578,7 +582,7 @@ class App extends React.Component {
       <Modal
         icon="folder_settings"
         title="Control Panel"
-        closeModal={() => this.updateModal("isControlPanelOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isControlPanelOpen")}
         height="400"
         width="500"
         priority={this.getModalPriority("isControlPanelOpen")}
@@ -693,7 +697,7 @@ class App extends React.Component {
       <Modal
         icon="folder_open"
         title="Documents" // "My Digital Brain"?
-        closeModal={() => this.updateModal("isDocumentsOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isDocumentsOpen")}
         height="400"
         width="500"
         priority={this.getModalPriority("isDocumentsOpen")}
@@ -747,7 +751,7 @@ class App extends React.Component {
       <Modal
         icon="recycle_full"
         title="Recycle Bin" 
-        closeModal={() => this.updateModal("isRecycleBinOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isRecycleBinOpen")}
         height="400"
         width="500"
         priority={this.getModalPriority("isRecycleBinOpen")}
@@ -810,7 +814,7 @@ class App extends React.Component {
       <Modal
         icon="mute"
         title="launch_party.mp4"
-        closeModal={() => this.updateModal("isWelcomeVideoOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isWelcomeVideoOpen")}
         height="390"
         width="555"
         priority={this.getModalPriority("isWelcomeVideoOpen")}
@@ -834,7 +838,7 @@ class App extends React.Component {
       <Modal
         icon="window_graph"
         title="liar.png"
-        closeModal={() => this.updateModal("isLiarPngOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isLiarPngOpen")}
         height="325"
         width="400"
         priority={this.getModalPriority("isLiarPngOpen")}
@@ -853,10 +857,11 @@ class App extends React.Component {
       <Modal
         icon="window_abc"
         title="bad_time.mp4"
-        closeModal={() => this.updateModal("isAwfulExperienceVideoOpen", false)}
+        closeModal={(e) => this.closeModal(e, "isAwfulExperienceVideoOpen")}
         height="390"
         width="465"
         onClickHandler={() => this.updateModal("isAwfulExperienceVideoOpen", true)}
+        priority={this.getModalPriority("isAwfulExperienceVideoOpen")}
         >
           <ReactPlayer 
             url='https://www.youtube.com/watch?v=tscOUFxV3qA' 
