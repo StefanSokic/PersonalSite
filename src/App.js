@@ -96,7 +96,6 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      time: new Date().toLocaleTimeString(),
       isStartMenuOpen: true,
       isNotepadOpen: true,
       isWelcomeAlertOpen: true,
@@ -120,10 +119,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
-    );
     this.setState({
       isStartMenuOpen: false,
       isNotepadOpen: false,
@@ -163,10 +158,6 @@ class App extends React.Component {
       [modalType]: val,
       modalPriorityStack: newModalPriorityStack,
     })
-  }
-
-  tick() {
-    this.setState({time: new Date().toLocaleTimeString()})
   }
 
   handleChange(val) {
@@ -775,6 +766,54 @@ class App extends React.Component {
       </Alert>;
   }
 
+  renderDesktopIcons() {
+    // TODO: render with MAP
+    const desktopIconsList = [
+      {
+        title: "My Computer",
+        iconName: "computer",
+        stateToUpdate: "isMyComputerOpen",
+      },
+      {
+        title: "Why.txt",
+        iconName: "file_text",
+        stateToUpdate: "isWhyModalOpen",
+      },
+      // {
+      //   title: "Music",
+      //   iconName: "cd_music",
+      //   stateToUpdate: "isMusicOpen",
+      // },
+      {
+        title: "NotePad",
+        iconName: "notepad",
+        stateToUpdate: "isNotepadOpen",
+      },
+      {
+        title: "Resume.pdf",
+        iconName: "wordpad",
+        stateToUpdate: "isResumePDFOpen",
+      },
+      {
+        title: "Recycle Bin",
+        iconName: "recycle_full",
+        stateToUpdate: "isRecycleBinOpen",
+      },
+    ]
+    return <IconList>
+      {
+        desktopIconsList.map((icon) => {
+          return (
+            <IconBox onDoubleClick={() => this.updateModal(icon.stateToUpdate, true)}>
+              <Icon name={icon.iconName} />
+              {icon.title}
+            </IconBox>
+          )
+        })
+      }
+    </IconList>
+  }
+
   render() {
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
@@ -800,39 +839,9 @@ class App extends React.Component {
         {this.renderControlPanelAlert()}
         {this.renderWelcomeVideo()}
 
-        <IconList>
-          <IconBox onDoubleClick={() => this.updateModal("isMyComputerOpen", true)}>
-            <Icon name="computer" />
-            My Computer
-          </IconBox>
-          {/* <IconBox>
-            <Icon name="earth" />
-            The Internet
-          </IconBox>
-           */}
-          <IconBox onDoubleClick={() => this.updateModal("isWhyModalOpen", true)}>
-            <Icon name="file_text" />
-            Why.txt
-          </IconBox>
-          <IconBox onDoubleClick={() => this.updateModal("isNotepadOpen", true)}>
-            <Icon name="notepad" />
-            NotePad
-          </IconBox>
-          {/* <IconBox>
-            <Icon name="cd_music" />
-            Music
-          </IconBox> */}
-          <IconBox onDoubleClick={() => this.updateModal("isResumePDFOpen", true)}>
-            <Icon name="wordpad" />
-            Resume.pdf
-          </IconBox>
-          <IconBox onDoubleClick={() => this.updateModal("isRecycleBinOpen", true)}>
-            <Icon name="recycle_full" />
-            Recycle Bin
-          </IconBox>
-        </IconList>
+        {this.renderDesktopIcons()}
 
-        <Footer time={this.state.time} clickHandler={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})} />
+        <Footer clickHandler={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})} />
       </div>
     );
   }

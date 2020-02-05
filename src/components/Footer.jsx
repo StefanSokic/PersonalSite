@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -65,31 +65,35 @@ const StartBtn = styled.button`
   }
 `;
 
-const Footer = ({clickHandler, time}) => {
-    return (
-        <FooterWrapper>
-            <span className="split-footer">
-                <StartBtn onClick={clickHandler}>
-                    <span id="split-footer-logo">
-                    <Icon name="logo" width="20"/>
-                    <span>Start</span>
-                    </span>
-                </StartBtn>
-                <StartBtn>
-                    <span id="split-footer-logo">
-                    <Icon name="unmute" width="20"/>
-                    <span>{time}</span>
-                    </span>
-                </StartBtn>
-            </span>
-        </FooterWrapper>
-    )
+const Footer = ({clickHandler}) => {
+  useEffect(() => {
+    setInterval(() => setTime(new Date().toLocaleTimeString()),1000);
+  }, []);
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+
+  return (
+    <FooterWrapper>
+        <span className="split-footer">
+            <StartBtn onClick={clickHandler}>
+                <span id="split-footer-logo">
+                <Icon name="logo" width="20"/>
+                <span>Start</span>
+                </span>
+            </StartBtn>
+            <StartBtn>
+                <span id="split-footer-logo">
+                <Icon name="unmute" width="20"/>
+                <span>{time}</span>
+                </span>
+            </StartBtn>
+        </span>
+    </FooterWrapper>
+  )
 }
 
 Footer.displayName = "Footer";
 
 Footer.propTypes = {
-    time: PropTypes.string,
     clickHandler: PropTypes.func,
 }
 
