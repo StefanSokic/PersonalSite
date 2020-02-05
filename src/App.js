@@ -17,6 +17,8 @@ import clouds from "./windows-95-clouds.jpg";
 import shutdown from "./shutdown.jpg"
 import logo from "./windows-95-logo.png";
 
+// TODO: enums to alerts to open
+
 const CoverBackground = styled.img`
   position: fixed;
   top: 0;
@@ -106,11 +108,14 @@ class App extends React.Component {
       isControlPanelOpen: true,
       isControlPanelAlertOpen: true,
       isAwfulExperienceVideoOpen: true,
-      isErrorOpen: true,
       isDocumentsOpen: true,
       isLiarPngOpen: true,
+      isFloppyAlertOpen: true,
+      isCDriveAlertOpen: true,
+      isDDriveAlertOpen: true,
+      isDialUpAlertOpen: true,
+      isPrintersAlertOpen: true,
       notepadTextValue: "",
-      ErrorMessage: "Oops, an error occurred.",
       startingUp: true,
       shuttingDown: false,
       // ex. [isNotePadOpen, isDocumentsOpen, ...], front of stack is highest z-index and on top visually
@@ -124,13 +129,17 @@ class App extends React.Component {
       isNotepadOpen: false,
       isControlPanelAlertOpen: false,
       isAwfulExperienceVideoOpen: false,
-      isErrorOpen: false,
       isResumePDFOpen: false,
       isWhyModalOpen: false,
       isMyComputerOpen:false,
       isDocumentsOpen: false,
       isControlPanelOpen: false,
       isLiarPngOpen: false,
+      isFloppyAlertOpen: false,
+      isCDriveAlertOpen: false,
+      isDDriveAlertOpen: false,
+      isDialUpAlertOpen: false,
+      isPrintersAlertOpen: false,
     })
     setInterval(
       () => this.setState({startingUp: false}),
@@ -189,6 +198,7 @@ class App extends React.Component {
       closeAlert={() => this.updateModal("isWelcomeAlertOpen", false)}
       priority={this.getModalPriority("isWelcomeAlertOpen")}
       onClickHandler={() => this.updateModal("isWelcomeAlertOpen", true)}
+      closeAlert={(e) => this.closeModal(e, "isWelcomeAlertOpen")}
       >
       Click me!
       </Alert>;
@@ -203,6 +213,7 @@ class App extends React.Component {
       closeAlert={() => this.updateModal("isControlPanelAlertOpen", false)}
       priority={this.getModalPriority("isControlPanelAlertOpen")}
       onClickHandler={() => this.updateModal("isControlPanelAlertOpen", true)}
+      closeAlert={(e) => this.closeModal(e, "isControlPanelAlertOpen")}
       >
       Ok Thanks
       </Alert>;
@@ -297,6 +308,7 @@ class App extends React.Component {
 
   renderResumePDF() {
     if (!this.state.isResumePDFOpen) return;
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
       <Modal
         icon="wordpad"
@@ -324,8 +336,7 @@ class App extends React.Component {
         title="Why.txt"
         closeModal={(e) => this.closeModal(e, "isWhyModalOpen")}
         buttons={[
-          { value: 'Ok Thanks', onClick: () => this.updateModal("isWhyModalOpen", false)},
-          // { value: 'Cancel', onClick: () => {} },
+          { value: 'Ok Thanks', onClick: (e) => this.closeModal(e, "isWhyModalOpen")},
         ]}
         height="500"
         width="430"
@@ -354,8 +365,60 @@ class App extends React.Component {
     )
   }
 
+  renderErrorAlert(message, stateToUpdate) {
+    if (!this.state[stateToUpdate]) return;
+    return (
+      <Alert 
+        title="Error" 
+        type="error" 
+        message={message} 
+        closeAlert={() => this.updateModal(stateToUpdate, false)}
+        priority={this.getModalPriority(stateToUpdate)}
+        onClickHandler={() => this.updateModal(stateToUpdate, true)}
+        closeAlert={(e) => this.closeModal(e, stateToUpdate)}
+        />
+    )
+  }
+
   renderMyComputer() {
     if (!this.state.isMyComputerOpen) return;
+    const myComputerIconList = [
+      {
+        title: "Floppy (A:)",
+        iconName: "reader_disket2",
+        stateToUpdate: "isFloppyAlertOpen",
+      },
+      {
+        title: "(C:)",
+        iconName: "reader_closed",
+        stateToUpdate: "isCDriveAlertOpen",
+      },
+      {
+        title: "New (D:)",
+        iconName: "reader_cd",
+        stateToUpdate: "isDDriveAlertOpen",
+      },
+      {
+        title: "Dial-Up",
+        iconName: "folder_shared",
+        stateToUpdate: "isDialUpAlertOpen",
+      },
+      {
+        title: "Control Panel",
+        iconName: "folder_settings",
+        stateToUpdate: "isControlPanelOpen",
+      },
+      {
+        title: "Printers",
+        iconName: "folder_print",
+        stateToUpdate: "isPrintersAlertOpen",
+      },
+      {
+        title: "Documents",
+        iconName: "folder_open",
+        stateToUpdate: "isDocumentsOpen",
+      },
+    ]
     return (
       <Modal
         icon="computer"
@@ -370,86 +433,34 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
+                <List.Item onClick={(e) => this.closeModal(e, "isMyComputerOpen")}>Exit</List.Item>
               </List>
             ),
-          },
-          {
-            name: 'Edit',
-            list: (
-              <List>
-                <List.Item>Copy</List.Item>
-              </List>
-            ),
-          },
-          {
-            name: 'View',
-            // list: (
-              // <List>
-              //   <List.Item>Copy</List.Item>
-              // </List>
-            // ),
           },
           {
             name: 'Help',
-            // list: (
-              // <List>
-              //   <List.Item>Copy</List.Item>
-              // </List>
-            // ),
+            list: (
+              <List>
+                <List.Item>On this website you are Helpless</List.Item>
+              </List>
+            ),
           },
         ]}
         >
         <WhiteSpace>
           <IconListRow>
-            <IconBoxMyComputer
-              onDoubleClick={() => this.setState({
-                ErrorMessage: "No floppy disk found",
-                isErrorOpen: true,
-              })}>
-              <Icon name="reader_disket2" />
-              Floppy (A:)
-            </IconBoxMyComputer>
-            <IconBoxMyComputer
-              onDoubleClick={() => this.setState({
-                ErrorMessage: "Don't really feel like hacking your Computers C: drive right now",
-                isErrorOpen: true,
-              })}>
-              <Icon name="reader_closed" />
-              (C:)
-            </IconBoxMyComputer>
-            <IconBoxMyComputer
-              onDoubleClick={() => this.setState({
-              ErrorMessage: "Nobody uses the D: drive",
-              isErrorOpen: true,
-              })}>
-              <Icon name="reader_cd" />
-              New (D:)
-            </IconBoxMyComputer>
-            <IconBoxMyComputer
-              onDoubleClick={() => this.setState({
-              ErrorMessage: "This is a website. You have internet. You don't need dialup.",
-              isErrorOpen: true,
-              })}>
-              <Icon name="folder_shared" />
-              Dial-Up
-            </IconBoxMyComputer>
-            <IconBoxMyComputer onDoubleClick={() => this.updateModal("isControlPanelOpen", true)}>
-              <Icon name="folder_settings" />
-              Control Panel
-            </IconBoxMyComputer>
-            <IconBoxMyComputer
-              onDoubleClick={() => this.setState({
-              ErrorMessage: "No printers detected",
-              isErrorOpen: true,
-              })}>
-              <Icon name="folder_print" />
-              Printers
-            </IconBoxMyComputer>
-            <IconBoxMyComputer onDoubleClick={() => this.updateModal("isDocumentsOpen", true)} >
-              <Icon name="folder_open" />
-              Documents
-            </IconBoxMyComputer>
+            {
+              myComputerIconList.map((item) => {
+                return (
+                  <IconBoxMyComputer
+                    onDoubleClick={() => this.updateModal(item.stateToUpdate, true)}
+                    >
+                    <Icon name={item.iconName} />
+                    {item.title}
+                  </IconBoxMyComputer>
+                )
+              })
+            }
           </IconListRow>
         </WhiteSpace>
       </Modal>
@@ -754,20 +765,7 @@ class App extends React.Component {
     )
   }
 
-  renderErrorAlert() {
-    if (!this.state.isErrorOpen) return;
-    return <Alert 
-      title="Error" 
-      type="error" 
-      message={this.state.ErrorMessage} 
-      closeAlert={() => this.updateModal("isErrorOpen", false)}>
-      priority={this.getModalPriority("isErrorOpen")}
-      onClickHandler={() => this.updateModal("isErrorOpen", true)}
-      </Alert>;
-  }
-
   renderDesktopIcons() {
-    // TODO: render with MAP
     const desktopIconsList = [
       {
         title: "My Computer",
@@ -799,7 +797,7 @@ class App extends React.Component {
         iconName: "recycle_full",
         stateToUpdate: "isRecycleBinOpen",
       },
-    ]
+    ];
     return <IconList>
       {
         desktopIconsList.map((icon) => {
@@ -808,40 +806,47 @@ class App extends React.Component {
               <Icon name={icon.iconName} />
               {icon.title}
             </IconBox>
-          )
+          );
         })
       }
-    </IconList>
+    </IconList>;
   }
 
   render() {
-    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
     return (
       <div className="App">
+        {/* Modals rendered on load */}
+        {this.renderWelcomeAlert()}
+        {this.renderWelcomeVideo()}
+
+        {/* Components rendered on load */}
+        {this.renderDesktopIcons()}
+        {/* TODO: put this in the footer */}
+        {this.renderStartMenu()} 
+        <Footer clickHandler={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})} />
+        
+        {/* Full screen images */}
         {this.renderStartupScreen()}
         {this.renderShutdownScreen()}
 
-        {this.renderWelcomeAlert()}
+        {/* Modals */}
         {this.renderResumePDF()}
         {this.renderWhyModal()}
         {this.renderNotepad()}
-        {this.renderStartMenu()}
         {this.renderMyComputer()}
         {this.renderDocuments()}
-
         {this.renderRecycleBin()}
         {this.renderLiarPng()}
         {this.renderAwfulExperienceVideo()}
-
-        {this.renderErrorAlert()}
-
         {this.renderControlPanel()}
+
+        {/* Alerts */}
         {this.renderControlPanelAlert()}
-        {this.renderWelcomeVideo()}
-
-        {this.renderDesktopIcons()}
-
-        <Footer clickHandler={() => this.setState({isStartMenuOpen: !this.state.isStartMenuOpen})} />
+        {this.renderErrorAlert("No floppy disk found", "isFloppyAlertOpen")}
+        {this.renderErrorAlert("No C: drive found.", "isCDriveAlertOpen")}
+        {this.renderErrorAlert("Does anyone know what a D: drive is?", "isDDriveAlertOpen")}
+        {this.renderErrorAlert("This is a website. You already have internet.", "isDialUpAlertOpen")}
+        {this.renderErrorAlert("No printers detected.", "isPrintersAlertOpen")}
       </div>
     );
   }

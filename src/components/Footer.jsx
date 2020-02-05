@@ -6,7 +6,7 @@ import Icon from './Icon';
 
 const FooterWrapper = styled.button`
   min-width: 100vw;
-  min-height: 5vh;
+  min-height: 2vh;
 
   z-index: 100000;
 
@@ -65,9 +65,30 @@ const StartBtn = styled.button`
   }
 `;
 
+const VolumeBtn = styled.button`
+  min-width: 3em;
+
+  background-color: #c3c7cb;
+  border: none;
+  font-size: 12px;
+
+  // &:disabled {
+  //   color: #868a8e;
+  // }
+  // &:focus {
+  //     box-shadow: inset 1px 1px 0px 1px #ffffff,
+  //       inset -0.5px -0.5px 0px 1px #868a8e, 1px 1px 0 1px #000;
+  //     outline: 1px dotted #000;
+  //     outline-offset: -5px;
+  // }
+  outline: 1px dotted #000;
+  outline-offset: -5px;
+  box-shadow: inset 0 0 0 1px #868a8e, 0 0 0 1px #000;
+`;
+
 const Footer = ({clickHandler}) => {
   useEffect(() => {
-    setInterval(() => setTime(new Date().toLocaleTimeString()),1000);
+    setInterval(() => setTime(new Date().toLocaleTimeString()), 1000);
   }, []);
   const [time, setTime] = useState(new Date().toLocaleTimeString());
 
@@ -80,12 +101,12 @@ const Footer = ({clickHandler}) => {
                 <span>Start</span>
                 </span>
             </StartBtn>
-            <StartBtn>
+            <VolumeBtn>
                 <span id="split-footer-logo">
                 <Icon name="unmute" width="20"/>
                 <span>{time}</span>
                 </span>
-            </StartBtn>
+            </VolumeBtn>
         </span>
     </FooterWrapper>
   )

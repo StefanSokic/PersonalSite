@@ -40,7 +40,7 @@ Dialog.Message = styled.div`
   justify-content: center;
 `;
 
-const Alert = ({ type, title, message, onCloseModal, closeAlert, ...rest }) => {
+const Alert = ({ type, title, message, onCloseModal, closeAlert, priority, ...rest }) => {
   const defaultPosition = {
     x: Math.floor(window.innerWidth / 2) - 150,
     y: Math.floor(window.innerHeight / 2) - 80,
@@ -49,12 +49,13 @@ const Alert = ({ type, title, message, onCloseModal, closeAlert, ...rest }) => {
   return (
     <Modal
       title={title}
-      closeModal={onCloseModal}
+      closeModal={closeAlert}
       buttonsAlignment="center"
       buttons={[{ value: 'OK', onClick: closeAlert }]}
       defaultPosition={defaultPosition}
       width="auto"
       height={120}
+      priority={priority}
       {...rest}
     >
       <Dialog>
