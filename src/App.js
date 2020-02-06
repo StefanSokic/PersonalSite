@@ -120,6 +120,9 @@ class App extends React.Component {
       isDDriveAlertOpen: true,
       isDialUpAlertOpen: true,
       isPrintersAlertOpen: true,
+      isBooksModalOpen: true,
+      isMoviesModalOpen: true,
+      isRecipesModalOpen: true,
       isHelpAlertOpen: true,
       notepadTextValue: "",
       startingUp: true,
@@ -147,6 +150,9 @@ class App extends React.Component {
       isHelpAlertOpen: false,
       isDialUpAlertOpen: false,
       isPrintersAlertOpen: false,
+      isBooksModalOpen: false,
+      isMoviesModalOpen: false,
+      isRecipesModalOpen: false,
     })
     setInterval(
       () => this.setState({startingUp: false}),
@@ -650,21 +656,23 @@ class App extends React.Component {
         >
         <WhiteSpace>
           <IconListRow>
-            <IconBoxMyComputer >
+            <IconBoxMyComputer
+              onDoubleClick={() => this.updateModal("isMoviesModalOpen", true)}
+              >
               <Icon name="folder" />
               Movies
             </IconBoxMyComputer>
-            <IconBoxMyComputer >
-              <Icon name="folder" />
-              Music
-            </IconBoxMyComputer>
-            <IconBoxMyComputer >
-              <Icon name="folder" />
-              Architecture
-            </IconBoxMyComputer>
-            <IconBoxMyComputer >
+            <IconBoxMyComputer 
+              onDoubleClick={() => this.updateModal("isBooksModalOpen", true)}
+              >
               <Icon name="folder" />
               Books
+            </IconBoxMyComputer>
+            <IconBoxMyComputer 
+              onDoubleClick={() => this.updateModal("isRecipesModalOpen", true)}
+              >
+              <Icon name="folder" />
+              Recipes
             </IconBoxMyComputer>
           </IconListRow>
         </WhiteSpace>
@@ -706,12 +714,12 @@ class App extends React.Component {
           <IconListRow>
             <IconBoxMyComputer 
               onDoubleClick={() => this.updateModal("isLiarPngOpen", true)}>
-              <Icon name="window_graph"/>
+              <Icon name="bat"/>
               liar.png
             </IconBoxMyComputer>
             <IconBoxMyComputer 
               onDoubleClick={() => this.updateModal("isAwfulExperienceVideoOpen", true)}>
-              <Icon name="folder" />
+              <Icon name="media_video" />
               bad_time.mp4
             </IconBoxMyComputer>
           </IconListRow>
@@ -848,6 +856,204 @@ class App extends React.Component {
     </IconList>;
   }
 
+  renderMoviesModal() {
+    if (!this.state.isMoviesModalOpen) return;
+    return (  
+      <Modal
+        icon="folder_open"
+        title="Movies"
+        height="400"
+        width="500"
+        closeModal={(e) => this.closeModal(e, "isMoviesModalOpen")}
+        priority={this.getModalPriority("isMoviesModalOpen")}
+        onClickHandler={() => this.updateModal("isMoviesModalOpen", true)}
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <Link target="_blank" href="https://letterboxd.com/film/8-half/">
+              <IconBoxMyComputer>
+                <Icon name="media_video"/>
+                8 1/2
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://letterboxd.com/film/whiplash-2014/">
+              <IconBoxMyComputer>
+                <Icon name="media_video"/>
+                Whiplash
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://letterboxd.com/film/whos-singin-over-there/">
+              <IconBoxMyComputer>
+                <Icon name="media_video"/>
+                Ko to Tamo...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://letterboxd.com/film/parasite-2019/">
+              <IconBoxMyComputer>
+                <Icon name="media_video"/>
+                Parasite
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://letterboxd.com/film/women-on-the-verge-of-a-nervous-breakdown/">
+              <IconBoxMyComputer>
+                <Icon name="media_video"/>
+                Women on...
+              </IconBoxMyComputer>
+            </Link>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    );
+  }
+
+  renderBooksModal() {
+    if (!this.state.isBooksModalOpen) return;
+    return (  
+      <Modal
+        icon="folder_open"
+        title="Books"
+        height="400"
+        width="500"
+        closeModal={(e) => this.closeModal(e, "isBooksModalOpen")}
+        priority={this.getModalPriority("isBooksModalOpen")}
+        onClickHandler={() => this.updateModal("isBooksModalOpen", true)}
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/485894.The_Metamorphosis">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                Metamorph...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/19380.Candide">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                Candide
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/91950.The_Myth_of_Sisyphus">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                The Myth of...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/4981.Slaughterhouse_Five">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                Slaughterho...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/97411.Letters_from_a_Stoic">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                Letters fro...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/9717.The_Unbearable_Lightness_of_Being">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                The Unbeara...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.goodreads.com/book/show/7144.Crime_and_Punishment">
+              <IconBoxMyComputer>
+                <Icon name="bookmark"/>
+                Crime and...
+              </IconBoxMyComputer>
+            </Link>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    );
+  }
+
+  renderRecipesModal() {
+    if (!this.state.isRecipesModalOpen) return;
+    return (  
+      <Modal
+        icon="folder_open"
+        title="Recipes"
+        height="400"
+        width="500"
+        closeModal={(e) => this.closeModal(e, "isRecipesModalOpen")}
+        priority={this.getModalPriority("isRecipesModalOpen")}
+        onClickHandler={() => this.updateModal("isRecipesModalOpen", true)}
+        menu={[
+          {
+            name: 'File',
+            list: (
+              <List>
+                <List.Item onClick={() => {}}>Exit</List.Item>
+              </List>
+            ),
+          },
+        ]}
+        >
+        <WhiteSpace>
+          <IconListRow>
+            <Link target="_blank" href="https://www.bonappetit.com/recipe/bas-best-buttermilk-biscuits">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Biscuits
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="http://ciaosamin.com/ciao/simple-cabbage-slaw">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Slaw
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.7x7.com/samin-nosrats-buttermilk-marinated-roast-chicken-recipe-1783817149.html">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Roast Chi...
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.bonappetit.com/recipe/bas-best-quiche-lorraine">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Quiche
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.bonappetit.com/recipe/spiced-pear-upside-down-cake">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Pear Cake
+              </IconBoxMyComputer>
+            </Link>
+            <Link target="_blank" href="https://www.bonappetit.com/recipe/fattoush">
+              <IconBoxMyComputer>
+                <Icon name="microsoft_exchange"/>
+                Fattoush
+              </IconBoxMyComputer>
+            </Link>
+          </IconListRow>
+        </WhiteSpace>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <div className="App">
@@ -875,6 +1081,11 @@ class App extends React.Component {
         {this.renderLiarPng()}
         {this.renderAwfulExperienceVideo()}
         {this.renderControlPanel()}
+
+        {/* Modals in Documents */}
+        {this.renderMoviesModal()}
+        {this.renderBooksModal()}
+        {this.renderRecipesModal()}
 
         {/* Alerts */}
         {this.renderControlPanelAlert()}
