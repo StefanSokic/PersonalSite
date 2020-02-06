@@ -24,6 +24,10 @@ const Link = styled.a`
   color: #000;
 `;
 
+const LinkUnderlined = styled.a`
+  color: #000;
+`;
+
 const CoverBackground = styled.img`
   position: fixed;
   top: 0;
@@ -196,6 +200,7 @@ class App extends React.Component {
     return 0
   }
 
+  // TODO: there should also be an openModal() function
   closeModal(event, modalType) {
     event.preventDefault();
     event.stopPropagation();
@@ -317,30 +322,30 @@ class App extends React.Component {
         icon="notepad"
         title="Untitled - Notepad"
         closeModal={(e) => this.closeModal(e, "isNotepadOpen")}
-        // buttons={[
-        //   { value: 'Ok', onClick: () => {} },
-        //   { value: 'Cancel', onClick: () => {} },
-        // ]}
         height={250}
         priority={this.getModalPriority("isNotepadOpen")}
         onClickHandler={() => this.updateModal("isNotepadOpen", true)}
         menu={[
           {
             name: 'File',
-            // list: (
-              // <List>
-              //   <List.Item onClick={() => {}}>Exit</List.Item>
-              // </List>
-            // ),
+            list: (
+              <List>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isNotepadOpen")}
+                  >
+                  Exit
+                </List.Item>
+              </List>
+            ),
           },
-          {
-            name: 'Edit',
-            // list: (
-              // <List>
-              //   <List.Item>Copy</List.Item>
-              // </List>
-            // ),
-          },
+          // {
+          //   name: 'Edit',
+          //   // list: (
+          //     // <List>
+          //     //   <List.Item>Copy</List.Item>
+          //     // </List>
+          //   // ),
+          // },
         ]}
         >
         <TextArea value={this.state.notepadTextValue} onChange={(e) => this.handleChange(e.target.value)} rows={10} cols={20} />
@@ -356,10 +361,6 @@ class App extends React.Component {
         icon="wordpad"
         title="Resume.pdf"
         closeModal={(e) => this.closeModal(e, "isResumePDFOpen")}
-        // buttons={[
-        //   { value: 'Ok', onClick: () => {} },
-        //   { value: 'Cancel', onClick: () => {} },
-        // ]}
         height="585"
         width="440"
         priority={this.getModalPriority("isResumePDFOpen")}
@@ -390,17 +391,44 @@ class App extends React.Component {
           <div id="why-modal-text">
             Why would I do this to you/myself?
             <br></br>
-            Because <span id="strikethrough">I clearly have too much time on my hands.</span> Windows 95 is my favourite user interface of all time. It was the first GUI to introduce the concept of the desktop, taskbar, start menu, and file manager - all of which remain present in current Windows versions. It made personal computing intuitive. Plus, look how it makes Bill dance.
+            Because <span id="strikethrough">I clearly have too much time on my hands.</span> Windows 95 is my favourite interface of all time. It was the first GUI to introduce the concept of the desktop, taskbar, start menu, and file manager - all of which remain present in current Windows versions. It made personal computing intuitive. Plus, look how it makes Bill dance.
             <br></br>
             <br></br>
             How did I build it?
             <br></br>
-            Mostly React. I used styled components and built on top of the scaffolding created by the cool people behind React95.
+            Mostly React. I used styled components and built on top of the scaffolding created by the cool people behind  
+              <LinkUnderlined target="_blank" href="https://github.com/React95/React95">
+                {" "} React95.
+              </LinkUnderlined>
             <br></br>
             <br></br>
             Who am I?
             <br></br>
-            An easily exciteable software person based in Toronto. Here are some links to my favourite music, movies, youtube channel, nostalgia, books, meme, clothing, blog, and human. Feel free to say hi via LinkedIn or shoot me an email. I tend to respond between two and `Number.POSITIVE_INFINITY` business days.
+            An easily exciteable software developer based in Toronto. Here are some links to my favourite 
+              <LinkUnderlined target="_blank" href="https://open.spotify.com/user/sstefan33?si=9D5qZx4oThagRNpRUhesxg">
+              {" "} music,
+              </LinkUnderlined>
+              <LinkUnderlined target="_blank" href="https://letterboxd.com/stefansokic/films/">
+              {" "} movies,
+              </LinkUnderlined>
+              <LinkUnderlined target="_blank" href="https://www.goodreads.com/user/show/109799337-stefan-soki">
+              {" "} books,
+              </LinkUnderlined>
+              <LinkUnderlined target="_blank" href="https://www.youtube.com/user/BonAppetitDotCom">
+              {" "} youtube channel,
+              </LinkUnderlined>
+              <LinkUnderlined target="_blank" href="https://dieworkwear.com/">
+              {" "} blog,
+              </LinkUnderlined>
+              {" "} and
+              <LinkUnderlined target="_blank" href="https://metro.co.uk/wp-content/uploads/2016/05/ad_204471054-e1462693722164.jpg?quality=80&strip=all/">
+              {" "} human.
+              </LinkUnderlined>
+                {" "}Feel free to say hi via 
+                <LinkUnderlined target="_blank" href="https://www.linkedin.com/in/stefan-sokic-84985098/">
+              {" "} LinkedIn
+              </LinkUnderlined>
+                 {" "}or email me at stefan.sokic33@gmail.com. I tend to respond between two and `Number.POSITIVE_INFINITY` business days.
           </div>
         </WhiteSpace>
       </Modal>
@@ -525,15 +553,9 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
-              </List>
-            ),
-          },
-          {
-            name: 'Edit',
-            list: (
-              <List>
-                <List.Item>Copy</List.Item>
+                <List.Item onClick={(e) => this.closeModal(e, "isControlPanelOpen")}>
+                  Exit
+                </List.Item>
               </List>
             ),
           },
@@ -640,15 +662,11 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
-              </List>
-            ),
-          },
-          {
-            name: 'Edit',
-            list: (
-              <List>
-                <List.Item>Copy</List.Item>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isDocumentsOpen")}
+                  >
+                  Exit
+                </List.Item>
               </List>
             ),
           },
@@ -696,15 +714,11 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
-              </List>
-            ),
-          },
-          {
-            name: 'Edit',
-            list: (
-              <List>
-                <List.Item>Copy</List.Item>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isRecycleBinOpen")}
+                  >
+                  Exit
+                </List.Item>
               </List>
             ),
           },
@@ -872,7 +886,11 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isMoviesModalOpen")}
+                  >
+                  Exit
+                  </List.Item>
               </List>
             ),
           },
@@ -932,7 +950,11 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isBooksModalOpen")}
+                  >
+                  Exit
+                  </List.Item>
               </List>
             ),
           },
@@ -1004,7 +1026,11 @@ class App extends React.Component {
             name: 'File',
             list: (
               <List>
-                <List.Item onClick={() => {}}>Exit</List.Item>
+                <List.Item 
+                  onClick={(e) => this.closeModal(e, "isRecipesModalOpen")}
+                  >
+                  Exit
+                  </List.Item>
               </List>
             ),
           },

@@ -24,7 +24,7 @@ body {
 }
 
 #why-modal-text {
-  margin: 0.2em;
+  margin: 0 0.2em;
   overflow: scroll;
   height: 12em;
 }
