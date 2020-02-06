@@ -19,6 +19,11 @@ import logo from "./windows-95-logo.png";
 
 // TODO: enums to alerts to open
 
+const Link = styled.a`
+  text-decoration: none;
+  color: #000;
+`;
+
 const CoverBackground = styled.img`
   position: fixed;
   top: 0;
@@ -115,6 +120,7 @@ class App extends React.Component {
       isDDriveAlertOpen: true,
       isDialUpAlertOpen: true,
       isPrintersAlertOpen: true,
+      isHelpAlertOpen: true,
       notepadTextValue: "",
       startingUp: true,
       shuttingDown: false,
@@ -138,6 +144,7 @@ class App extends React.Component {
       isFloppyAlertOpen: false,
       isCDriveAlertOpen: false,
       isDDriveAlertOpen: false,
+      isHelpAlertOpen: false,
       isDialUpAlertOpen: false,
       isPrintersAlertOpen: false,
     })
@@ -227,14 +234,30 @@ class App extends React.Component {
     <List id="start-menu">
         <List.Item icon="folder_exe2">
           <List>
-            <List.Item icon="folder_exe">Accessories</List.Item>
-            <List.Item icon="folder_exe">StartUp</List.Item>
-            <List.Item icon="microsoft_exchange">Microsoft Exchange</List.Item>
-            <List.Item icon="ms_dos">MS-DOS Prompt</List.Item>
-            <List.Item icon="microsoft_network">
-              The Microsoft Network
+            <List.Item 
+              icon="notepad"
+              onClick={() => this.updateModal("isNotepadOpen", true)}
+              >
+              Notepad
             </List.Item>
-            <List.Item icon="windows_explorer">Windows Explorer</List.Item>
+            <List.Item 
+              icon="file_text"
+              onClick={() => this.updateModal("isWhyModalOpen", true)}
+              >
+              Why.txt
+            </List.Item>
+            <List.Item 
+              icon="wordpad"
+              onClick={() => this.updateModal("isResumePDFOpen", true)}
+              >
+              Resume.pdf
+            </List.Item>
+            <List.Item 
+              icon="recycle_full"
+              onClick={() => this.updateModal("isRecycleBinOpen", true)}
+              >
+              Recycle Bin
+            </List.Item>
           </List>
           Programs
         </List.Item>
@@ -251,13 +274,26 @@ class App extends React.Component {
               onClick={() => this.updateModal("isControlPanelOpen", true)}>
               Control Panel
             </List.Item>
-            <List.Item icon="folder_print">Printers</List.Item>
+            <List.Item 
+              icon="folder_print"
+              onClick={() => this.updateModal("isPrintersAlertOpen", true)}
+              >Printers</List.Item>
           </List>
           Settings
         </List.Item>
-        <List.Item icon="file_find">Find</List.Item>
-        <List.Item icon="help_book">Help</List.Item>
-        <List.Item icon="loader_bat">Run...</List.Item>
+        {/* <List.Item icon="file_find">Find</List.Item> */}
+        <Link target="_blank" href="https://github.com/StefanSokic">
+          <List.Item icon="shortcut2">My Github</List.Item>
+        </Link>
+        <Link target="_blank" href="https://www.linkedin.com/in/stefan-sokic-84985098/">
+          <List.Item icon="shortcut2">My LinkedIn</List.Item>
+          </Link>
+        <List.Item 
+          icon="help_book"
+          onClick={() => this.updateModal("isHelpAlertOpen", true)}
+          >
+          Help
+        </List.Item>
         <List.Divider />
         <List.Item 
           onClick={() => this.setState({shuttingDown: true})} // TODO: either link to "are you sure" window or close all tabs before displaying image
@@ -441,7 +477,7 @@ class App extends React.Component {
             name: 'Help',
             list: (
               <List>
-                <List.Item>On this website you are Helpless</List.Item>
+                <List.Item>On this website you are helpless</List.Item>
               </List>
             ),
           },
@@ -847,6 +883,7 @@ class App extends React.Component {
         {this.renderErrorAlert("Does anyone know what a D: drive is?", "isDDriveAlertOpen")}
         {this.renderErrorAlert("This is a website. You already have internet.", "isDialUpAlertOpen")}
         {this.renderErrorAlert("No printers detected.", "isPrintersAlertOpen")}
+        {this.renderErrorAlert("On this website you are helpless.", "isHelpAlertOpen")}
       </div>
     );
   }

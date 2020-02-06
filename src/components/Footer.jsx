@@ -4,9 +4,17 @@ import styled from 'styled-components';
 
 import Icon from './Icon';
 
+const Time = styled.span`
+  min-width: 5.5em;
+`;
+
+const StartText = styled.span`
+  min-width: 2.8em;
+`;
+
 const FooterWrapper = styled.button`
-  min-width: 100vw;
-  min-height: 2vh;
+min-width: 100vw;
+min-height: 2vh;
 
   z-index: 100000;
 
@@ -38,6 +46,7 @@ const FooterWrapper = styled.button`
   // }
 `;
 
+
 const StartBtn = styled.button`
   min-width: 3em;
 
@@ -66,7 +75,7 @@ const StartBtn = styled.button`
 `;
 
 const VolumeBtn = styled.button`
-  min-width: 3em;
+  min-width: 4em;
 
   background-color: #c3c7cb;
   border: none;
@@ -98,13 +107,13 @@ const Footer = ({clickHandler}) => {
             <StartBtn onClick={clickHandler}>
                 <span id="split-footer-logo">
                 <Icon name="logo" width="20"/>
-                <span>Start</span>
+                <StartText>Start</StartText>
                 </span>
             </StartBtn>
             <VolumeBtn>
                 <span id="split-footer-logo">
                 <Icon name="unmute" width="20"/>
-                <span>{time}</span>
+                <Time>{time}</Time>
                 </span>
             </VolumeBtn>
         </span>
