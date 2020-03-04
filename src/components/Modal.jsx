@@ -151,6 +151,8 @@ const Modal = ({
   height,
   priority,
   onClickHandler,
+  x,
+  y,
   ...rest
 }) => {
   const [menuOpened, setMenuOpened] = useState('');
@@ -163,8 +165,8 @@ const Modal = ({
     },
   };
 
-  let randx = Math.random() * (400) + 100;
-  let randy = Math.random() * (50) + 1;
+  let randx = x !== undefined ? x : Math.random() * (400) + 100;
+  let randy = y !== undefined ? y : Math.random() * (50) + 1;
 
   return (
     <React.Fragment>

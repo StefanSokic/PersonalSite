@@ -128,11 +128,12 @@ class App extends React.Component {
       isMoviesModalOpen: true,
       isRecipesModalOpen: true,
       isHelpAlertOpen: true,
+      isMobileWarningOpen: false,
       notepadTextValue: "",
       startingUp: true,
       shuttingDown: false,
       // ex. [isNotePadOpen, isDocumentsOpen, ...], front of stack is highest z-index and on top visually
-      modalPriorityStack: ["isWelcomeAlertOpen","isWelcomeVideoOpen"],
+      modalPriorityStack: ["isMobileWarningOpen", "isWelcomeAlertOpen","isWelcomeVideoOpen"],
     }
   }
 
@@ -162,6 +163,12 @@ class App extends React.Component {
       () => this.setState({startingUp: false}),
       3000
     );
+    window.addEventListener("windowSize", this.windowSize.bind(this));
+    this.windowSize();
+  }
+
+  windowSize() {
+    this.setState({isMobileWarningOpen: window.innerWidth <= 760});
   }
 
   updateModal(modalType, val) {
@@ -217,6 +224,23 @@ class App extends React.Component {
       priority={this.getModalPriority("isWelcomeAlertOpen")}
       onClickHandler={() => this.updateModal("isWelcomeAlertOpen", true)}
       closeAlert={(e) => this.closeModal(e, "isWelcomeAlertOpen")}
+      >
+      Click me!
+      </Alert>;
+  }
+
+  renderMobileWarning() {
+    if (!this.state.isMobileWarningOpen) return;
+    return <Alert 
+      title="pls stop" 
+      type="warning" 
+      x={0}
+      y={200}
+      message="Windows 95 wasn't designed for mobile. Switch to desktop or suffer." 
+      closeAlert={() => this.updateModal("isMobileWarningOpen", false)}
+      priority={this.getModalPriority("isMobileWarningOpen")}
+      onClickHandler={() => this.updateModal("isMobileWarningOpen", true)}
+      closeAlert={(e) => this.closeModal(e, "isMobileWarningOpen")}
       >
       Click me!
       </Alert>;
@@ -1084,6 +1108,7 @@ class App extends React.Component {
     return (
       <div className="App">
         {/* Modals rendered on load */}
+        {this.renderMobileWarning()}
         {this.renderWelcomeAlert()}
         {this.renderWelcomeVideo()}
 
