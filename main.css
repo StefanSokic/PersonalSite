@@ -1,0 +1,89 @@
+body {
+    background: white;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.outer {
+    flex: 1;
+    display: grid;
+    overflow: hidden;
+    align-content: center;
+    justify-content: center;
+}
+
+:root {
+    --cell: 60px;
+    --circle: 50px;
+    --mask: 25px;
+    --p-edge: 4px;
+    --p-mid: 12px;
+    --p-diag: 21px;
+    --p-center: 25px;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --cell: 75px;
+        --circle: 62px;
+        --mask: 31px;
+        --p-edge: 5px;
+        --p-mid: 15px;
+        --p-diag: 26px;
+        --p-center: 31px;
+    }
+}
+
+.spinner {
+    animation: spin 10s linear infinite;
+    width: var(--cell);
+    height: var(--cell);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outer-circle {
+    background-color: black;
+    width: var(--circle);
+    height: var(--circle);
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.inner-mask {
+    background-color: white;
+    width: var(--mask);
+    height: var(--mask);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.one   { left: var(--p-mid);    top: var(--p-center); }
+.two   { left: var(--p-diag);   top: var(--p-diag); }
+.three { left: var(--p-center); top: var(--p-mid); }
+.four  { left: var(--p-diag);   top: var(--p-edge); }
+.five  { left: var(--p-mid);    top: 0; }
+.six   { left: var(--p-edge);   top: var(--p-edge); }
+.seven { left: 0;               top: var(--p-mid); }
+.eight { left: var(--p-edge);   top: var(--p-diag); }
+
+.footer {
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-family: 'Tiny5', sans-serif;
+    font-size: 48px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
